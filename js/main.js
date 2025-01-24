@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:8080'
-    : 'https://chakra-backend.herokuapp.com'; // Heroku-Backend-URL
+    : 'https://chakra-backend-3783b443f623.herokuapp.com'; // Heroku-Backend-URL
 
   // Falls du ein Kalender-Element hast
   const calendarEl = document.getElementById('calendar');

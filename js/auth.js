@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:8080' // Lokales Backend
-    : 'https://chakra-backend.herokuapp.com'; // Heroku-Backend
+    : 'https://chakra-backend-3783b443f623.herokuapp.com'; // Heroku-Backend
 
   // --- Registrierung ---
   const regForm = document.getElementById('register-form');
