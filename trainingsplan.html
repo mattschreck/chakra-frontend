@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trainingsplan | Chakra Wellness</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FullCalendar -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"
+  ></script>
+
+  <!-- nav.js + main.js -->
+  <script defer src="js/nav.js"></script>
+  <script defer src="js/main.js"></script>
+
+  <!-- Eigene Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Dynamische Navbar -->
+  <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10">
+    <!-- nav.js füllt das -->
+  </nav>
+
+  <!-- Hauptinhalt Trainingsplan -->
+  <main class="pt-24 pb-16 max-w-screen-2xl mx-auto px-4">
+    <h1 class="text-4xl font-bold text-gray-800 mb-6">Trainingsplan</h1>
+    <p class="text-gray-600 mb-4">
+      Hier können Sie Ihren individuellen Trainingsplan einsehen, bearbeiten und neue Übungen hinzufügen.
+    </p>
+
+    <!-- Formular zum Hinzufügen neuer Übungen -->
+    <div class="bg-white p-4 rounded shadow mb-6">
+      <h2 class="text-2xl font-bold mb-4">Neue Übung</h2>
+      <form id="exercise-form" class="space-y-4">
+        <div>
+          <label for="ex-title" class="block font-semibold">Übungstitel</label>
+          <input
+            type="text"
+            id="ex-title"
+            class="border border-gray-300 p-2 rounded w-full"
+            placeholder="z.B. Bizepscurls"
+            required
+          />
+        </div>
+        <div>
+          <label for="ex-date" class="block font-semibold">Datum</label>
+          <input
+            type="date"
+            id="ex-date"
+            class="border border-gray-300 p-2 rounded w-full"
+            required
+          />
+        </div>
+        <div>
+          <label for="ex-weight" class="block font-semibold">Gewicht (kg)</label>
+          <input
+            type="number"
+            id="ex-weight"
+            class="border border-gray-300 p-2 rounded w-full"
+            placeholder="z.B. 12"
+            required
+          />
+        </div>
+        <div>
+          <label for="ex-repetitions" class="block font-semibold">Wiederholungen</label>
+          <input
+            type="number"
+            id="ex-repetitions"
+            class="border border-gray-300 p-2 rounded w-full"
+            placeholder="z.B. 10"
+            required
+          />
+        </div>
+        <div>
+          <label for="ex-sets" class="block font-semibold">Sätze</label>
+          <input
+            type="number"
+            id="ex-sets"
+            class="border border-gray-300 p-2 rounded w-full"
+            placeholder="z.B. 3"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+        >
+          Hinzufügen
+        </button>
+      </form>
+    </div>
+
+    <!-- FullCalendar-Container -->
+    <div id="calendar" class="bg-white p-4 rounded shadow"></div>
+  </main>
+</body>
+</html>

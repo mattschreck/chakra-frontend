@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chakra Wellness - Mein Account</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- auth.js + nav.js -->
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/nav.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+  <!-- Navbar dynamisch -->
+  <nav id="navbar" class="bg-white border-b border-gray-200"></nav>
+
+  <main class="flex-grow flex items-center justify-center">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Mein Account</h2>
+      <div id="account-info" class="text-gray-700 mb-6 text-center"></div>
+      <button id="logout-btn" class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition">
+        Logout
+      </button>
+    </div>
+  </main>
+</body>
+</html>

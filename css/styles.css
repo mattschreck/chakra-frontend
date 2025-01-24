@@ -1,0 +1,42 @@
+/* -------------------------
+   Schriften (Optional Custom Classes)
+--------------------------- */
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Allgemeine Einstellungen */
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+/* FAQ-Arrow-Animation */
+.faq-arrow {
+  transition: transform 0.2s ease-in-out;
+}
+.faq-arrow.open {
+  transform: rotate(90deg);
+}
+
+/* Animationen für das Mobile-Menü */
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out forwards;
+}
+.animate-slide-out {
+  animation: slide-out 0.3s ease-out forwards;
+}
+@keyframes slide-in {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes slide-out {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-100%); }
+}
+

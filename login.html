@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chakra Wellness - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- auth.js (Login-Logik) + nav.js (Navbar) -->
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/nav.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-white border-b border-gray-200" id="navbar">
+    <!-- dynamisch via nav.js -->
+  </nav>
+
+  <main class="flex-grow flex items-center justify-center">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-sm">
+      <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
+      <form id="login-form">
+        <div class="mb-4">
+          <label for="login-email" class="block text-gray-600 font-medium">Email</label>
+          <input id="login-email" type="email" class="w-full mt-1 p-3 border rounded-lg" required />
+        </div>
+        <div class="mb-4">
+          <label for="login-password" class="block text-gray-600 font-medium">Passwort</label>
+          <input id="login-password" type="password" class="w-full mt-1 p-3 border rounded-lg" required />
+        </div>
+        <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition">
+          Login
+        </button>
+      </form>
+      <p id="login-result" class="text-center mt-4 text-red-600"></p>
+    </div>
+  </main>
+</body>
+</html>

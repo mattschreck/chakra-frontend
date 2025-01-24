@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chakra Wellness</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Hier bindest du NUR nav.js (und auth.js, wenn du den Login-Status verwenden willst) -->
+  <script defer src="js/auth.js"></script> <!-- optional, nur falls Login/Logout -->
+  <script defer src="js/nav.js"></script>
+
+  <!-- Deine eigenen Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Dynamische Navbar -->
+  <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10">
+    <!-- Wird per nav.js gefüllt -->
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-24 pb-16 bg-gray-100">
+    <div class="max-w-screen-2xl mx-auto px-4 flex flex-col lg:flex-row items-center">
+      <div class="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">
+          Willkommen auf Ihrer <span class="text-green-500">Wellness-Reise</span> bei Chakra.
+        </h1>
+        <p class="text-gray-600 mb-6">
+          Im Chakra Cottbus bieten wir einen ganzheitlichen Ansatz für Gesundheit und Wohlbefinden.
+          Entdecken Sie unsere ruhige Umgebung, in der Ihr Wohlbefinden unsere oberste Priorität ist.
+        </p>
+      </div>
+      <div class="lg:w-1/2 flex justify-center">
+        <img src="images/hero-picture.jpg" alt="Yoga on the Beach" class="rounded-lg shadow-lg max-w-full h-auto">
+      </div>
+    </div>
+  </section>
+
+  <!-- Angebote Section -->
+  <section class="max-w-screen-2xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center mb-8">Entdecken Sie unsere vielseitigen Angebote</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Angebot 1 -->
+      <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition-shadow">
+        <div class="flex justify-center mb-4">
+          <img src="images/exercise.svg" alt="Training Logo" class="h-16 w-16">
+        </div>
+        <h3 class="text-xl font-bold mb-2">Maßgeschneidertes Training</h3>
+        <p class="text-gray-600">
+          Nehmen Sie an einer Vielzahl von Fitnesskursen teil, um Ihre körperliche Gesundheit zu verbessern.
+        </p>
+      </div>
+      <!-- Angebot 2 -->
+      <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition-shadow">
+        <div class="flex justify-center mb-4">
+          <img src="images/spa.svg" alt="Spa Logo" class="h-16 w-16">
+        </div>
+        <h3 class="text-xl font-bold mb-2">Entspannen und Erholen</h3>
+        <p class="text-gray-600">
+          Erleben Sie Entspannung mit unseren verschiedenen Sauna-Optionen.
+        </p>
+      </div>
+      <!-- Angebot 3 -->
+      <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition-shadow">
+        <div class="flex justify-center mb-4">
+          <img src="images/physio.svg" alt="Physiotherapie Logo" class="h-16 w-16">
+        </div>
+        <h3 class="text-xl font-bold mb-2">Genesung durch Physiotherapie</h3>
+        <p class="text-gray-600">
+          Unsere Physiotherapiebehandlungen sind darauf ausgelegt, Schmerzen zu lindern und die Genesung zu unterstützen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistik Section -->
+  <section class="bg-gray-100 py-16">
+    <div class="max-w-screen-2xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-8">Unsere beeindruckenden Gesundheits- und Wellness-Statistiken</h2>
+      <p class="text-gray-600 mb-8">
+        Chakra Cottbus bietet eine umfangreiche Einrichtung und vielfältige Dienstleistungen.
+      </p>
+      <div class="text-6xl font-bold text-green-500 mb-2">1700</div>
+      <p class="text-gray-600">Quadratmeter für Gesundheit und Wellness.</p>
+    </div>
+  </section>
+
+  <!-- Partner Section -->
+  <section class="bg-white py-16">
+    <div class="max-w-screen-2xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-8">Unsere Partner</h2>
+      <!-- Platz für Partner-Logos oder Beschreibungen -->
+      <p class="text-gray-600">(Inhalte zu den Partnern folgen)</p>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="max-w-screen-2xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center mb-8">Häufig gestellte Fragen</h2>
+    <div class="space-y-4">
+      <!-- FAQ 1 -->
+      <div class="p-4 bg-white rounded-lg shadow">
+        <button class="font-bold text-left w-full flex justify-between items-center faq-toggle">
+          Welche Dienstleistungen bieten Sie an?
+          <svg xmlns="http://www.w3.org/2000/svg" class="faq-arrow h-5 w-5 transition-transform"
+               fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2" d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        <p class="text-gray-600 mt-2 hidden">
+          Wir bieten Fitness, Wellness, Physiotherapie und vieles mehr.
+        </p>
+      </div>
+      <!-- FAQ 2 -->
+      <div class="p-4 bg-white rounded-lg shadow">
+        <button class="font-bold text-left w-full flex justify-between items-center faq-toggle">
+          Arbeiten Sie mit Krankenkassen zusammen?
+          <svg xmlns="http://www.w3.org/2000/svg" class="faq-arrow h-5 w-5 transition-transform"
+               fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2" d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        <p class="text-gray-600 mt-2 hidden">
+          Ja, wir arbeiten mit Krankenkassen zusammen, um Sie zu unterstützen.
+        </p>
+      </div>
+      <!-- FAQ 3 -->
+      <div class="p-4 bg-white rounded-lg shadow">
+        <button class="font-bold text-left w-full flex justify-between items-center faq-toggle">
+          Was sind Ihre Öffnungszeiten?
+          <svg xmlns="http://www.w3.org/2000/svg" class="faq-arrow h-5 w-5 transition-transform"
+               fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2" d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        <p class="text-gray-600 mt-2 hidden">
+          Unsere Öffnungszeiten sind von Montag bis Samstag, 8:00 bis 20:00 Uhr.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-400 py-8">
+    <div class="max-w-screen-2xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+      <div>
+        <img src="/images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto mb-2">
+        <p>Level 1, 12 Sample St<br/>Sydney NSW 2000</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-200 mb-2">Folgen Sie uns</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="hover:text-white"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
