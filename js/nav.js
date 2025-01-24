@@ -1,20 +1,16 @@
-// js/nav.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
 
   // Prüfe Login-Status
   const token = localStorage.getItem('authToken');
-  const userName = localStorage.getItem('userName');  // Neu
-  // const userEmail = localStorage.getItem('userEmail'); // falls du es brauchst
+  const userName = localStorage.getItem('userName');
 
-  // Baue HTML für die Navbar (Desktop + Mobile)
-  // Struktur: <Logo> <Mitte: Trainingsplan> <Rechts: Login/Register ODER Account/Logout>
+  // Baue HTML für die Navbar
   let navHtml = `
     <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between py-4">
       <!-- Logo links -->
-      <a href="index.html">
+      <a href="index.html" class="flex items-center">
         <img src="images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
       </a>
 
@@ -28,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </ul>
 
       <!-- RECHTS: abhängig vom Login-Status -->
-      <ul class="hidden lg:flex space-x-6">
+      <ul class="hidden lg:flex space-x-6 items-center">
   `;
 
   if (!token) {
@@ -47,12 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   } else {
     // EINGELOGGT => Account-Button + Logout
-    // Optional: userName anzeigen
     navHtml += `
       <li>
-        <a href="account.html" class="flex items-center text-gray-600 hover:text-green-500">
-          <img src="images/person.svg" alt="Account" class="h-5 w-5 mr-2" />
-          Account
+        <a href="account.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-500">
+          <img src="images/person.svg" alt="Account" class="h-5 w-5" />
+          <span>Account</span>
         </a>
       </li>
       <li>
@@ -113,9 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // EINGELOGGT - MOBILE
     navHtml += `
         <li>
-          <a href="account.html" class="flex items-center text-gray-600 hover:text-green-500 text-lg">
-            <img src="images/person.svg" alt="Account" class="h-5 w-5 mr-2" />
-            Account
+          <a href="account.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-500 text-lg">
+            <img src="images/person.svg" alt="Account" class="h-5 w-5" />
+            <span>Account</span>
           </a>
         </li>
         <li>
