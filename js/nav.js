@@ -4,13 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Prüfe Login-Status
   const token = localStorage.getItem('authToken');
-  const userName = localStorage.getItem('userName');
 
   // Baue HTML für die Navbar
   let navHtml = `
     <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between py-4">
       <!-- Logo links -->
-      <a href="index.html" class="flex items-center">
+      <a href="index.html">
         <img src="images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
       </a>
 
@@ -42,12 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
       </li>
     `;
   } else {
-    // EINGELOGGT => Account-Button + Logout
+    // EINGELOGGT => Nur Icon + Logout
     navHtml += `
       <li>
-        <a href="account.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-500">
-          <img src="images/person.svg" alt="Account" class="h-5 w-5" />
-          <span>Account</span>
+        <a href="account.html" class="text-gray-600 hover:text-green-500">
+          <img src="images/person.svg" alt="Account" class="h-6 w-6" />
         </a>
       </li>
       <li>
@@ -58,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
-  navHtml += `</ul>
+  navHtml += `
+      </ul>
       <!-- Hamburger -->
       <button id="menu-toggle" class="lg:hidden text-gray-600 hover:text-green-500">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
@@ -108,9 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // EINGELOGGT - MOBILE
     navHtml += `
         <li>
-          <a href="account.html" class="flex items-center space-x-2 text-gray-600 hover:text-green-500 text-lg">
-            <img src="images/person.svg" alt="Account" class="h-5 w-5" />
-            <span>Account</span>
+          <a href="account.html" class="text-gray-600 hover:text-green-500 text-lg">
+            <img src="images/person.svg" alt="Account" class="h-6 w-6 mx-auto" />
           </a>
         </li>
         <li>
