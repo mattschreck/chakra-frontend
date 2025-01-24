@@ -1,6 +1,10 @@
 // js/auth.js
-
 document.addEventListener('DOMContentLoaded', () => {
+  // Backend-URL flexibel setzen
+  const BACKEND_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:8080' // Lokales Backend
+    : 'https://chakra-backend.herokuapp.com'; // Heroku-Backend
+
   // --- Registrierung ---
   const regForm = document.getElementById('register-form');
   if (regForm) {
@@ -12,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const resultEl = document.getElementById('reg-result');
 
       try {
-        const response = await fetch('http://localhost:8080/api/users/register', {
+        const response = await fetch(`${BACKEND_URL}/api/users/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password })
@@ -46,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const resultEl = document.getElementById('login-result');
 
       try {
-        const response = await fetch('http://localhost:8080/api/users/login', {
+        const response = await fetch(`${BACKEND_URL}/api/users/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -60,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userId', data.userId);
 
-          // Angenommen, du gibst 'name' und 'email' im Backend zurück.
           if (data.name) {
             localStorage.setItem('userName', data.name);
           }
@@ -83,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Account-Seite (falls du dort was brauchst) ---
+  // --- Account-Seite ---
   const accountInfo = document.getElementById('account-info');
   if (accountInfo) {
     const token = localStorage.getItem('authToken');
@@ -92,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = localStorage.getItem('userEmail');
 
     if (!token || !userId) {
-      // nicht eingeloggt -> zurück zur Startseite
+      // Nicht eingeloggt -> zurück zur Startseite
       window.location.href = "index.html";
     } else {
       // Zeige Name und E-Mail an
@@ -104,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Logout-Button im account.html?
+  // --- Logout ---
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {

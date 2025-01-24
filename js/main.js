@@ -1,5 +1,10 @@
 // main.js
 document.addEventListener('DOMContentLoaded', () => {
+  // Backend-URL flexibel setzen
+  const BACKEND_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:8080'
+    : 'https://chakra-backend.herokuapp.com'; // Heroku-Backend-URL
+
   // Falls du ein Kalender-Element hast
   const calendarEl = document.getElementById('calendar');
   let calendar;
@@ -16,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       // Hole Events vom Backend
       events: {
-        url: 'http://localhost:8080/api/exercises',
+        url: `${BACKEND_URL}/api/exercises`,
         method: 'GET',
         failure: () => {
           alert('Fehler beim Laden der Events vom Backend!');
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        const response = await fetch('http://localhost:8080/api/exercises', {
+        const response = await fetch(`${BACKEND_URL}/api/exercises`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newEvent)
