@@ -1,4 +1,3 @@
-// main.js
 document.addEventListener('DOMContentLoaded', () => {
   // Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
@@ -26,6 +25,21 @@ document.addEventListener('DOMContentLoaded', () => {
         failure: () => {
           alert('Fehler beim Laden der Events vom Backend!');
         }
+      },
+      // Ergänzung: Benutzerdefinierte Darstellung der Events
+      eventContent: function (info) {
+        const { title, extendedProps } = info.event;
+        // Rückgabe von benutzerdefiniertem HTML für jedes Event
+        return {
+          html: `
+            <div>
+              <strong>${title}</strong><br />
+              Gewicht: ${extendedProps.weight} kg<br />
+              Sätze: ${extendedProps.sets}<br />
+              Wiederholungen: ${extendedProps.repetitions}
+            </div>
+          `
+        };
       }
     });
     calendar.render();
