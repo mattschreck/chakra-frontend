@@ -21,14 +21,14 @@
   <script defer src="js/nav.js"></script>
   <script defer src="js/main.js"></script>
 
-  <!-- Deine eigenen Styles -->
+  <!-- Eigene Styles -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-50 text-gray-800">
   <!-- Navbar -->
   <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10"></nav>
 
-  <!-- Main-Bereich: Trainingsplan -->
+  <!-- Hauptinhalt Trainingsplan -->
   <main class="pt-24 pb-16 max-w-screen-2xl mx-auto px-4">
     <h1 class="text-4xl font-bold mb-6">Trainingsplan</h1>
     <p class="text-gray-600 mb-4">
@@ -75,41 +75,48 @@
       </form>
     </div>
 
-    <!-- FullCalendar-Container -->
-    <div id="calendar" class="bg-white p-4 rounded shadow"></div>
-
-    <!-- WETTER-WIDGET -->
-    <div id="weather-container" class="bg-white p-4 rounded shadow mt-6">
-      <h2 class="text-2xl font-bold mb-4">Aktuelles Wetter</h2>
-
-      <div class="mb-4">
-        <label for="weather-city" class="block font-semibold">Stadt:</label>
-        <input type="text" id="weather-city" 
-               class="border border-gray-300 p-2 rounded w-full" 
-               placeholder="z.B. Cottbus"
-               value="Berlin" />
+    <!-- Flex-Container für Kalender und Wetter nebeneinander -->
+    <div class="md:flex md:space-x-6">
+      <!-- FullCalendar-Container (links) -->
+      <div class="md:w-3/4 mb-6 md:mb-0">
+        <div id="calendar" class="bg-white p-4 rounded shadow"></div>
       </div>
-      <button id="load-weather-btn"
-              class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-        Wetter laden
-      </button>
 
-      <!-- Hier das Widget -->
-      <div id="weather-widget" class="mt-4 p-4 bg-gray-100 rounded hidden">
-        <div class="flex items-center">
-          <img id="weather-icon" class="w-16 h-16 mr-4" alt="Wetter Icon" />
-          <div>
-            <div id="weather-temp" class="text-2xl font-bold"></div>
-            <div id="weather-desc" class="text-gray-700"></div>
+      <!-- Wetter-Widget (rechts) -->
+      <div class="md:w-1/4">
+        <div id="weather-container" class="bg-white p-4 rounded shadow">
+          <h2 class="text-2xl font-bold mb-4">Aktuelles Wetter</h2>
+
+          <div class="mb-4">
+            <label for="weather-city" class="block font-semibold">Stadt:</label>
+            <input type="text" id="weather-city" 
+                   class="border border-gray-300 p-2 rounded w-full" 
+                   placeholder="z.B. Cottbus"
+                   value="Berlin" />
           </div>
-        </div>
-        <div class="text-gray-500 mt-2">
-          Stadt: <span id="weather-city-result"></span>
+          <button id="load-weather-btn"
+                  class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+            Wetter laden
+          </button>
+
+          <!-- Hier das Widget -->
+          <div id="weather-widget" class="mt-4 p-4 bg-gray-100 rounded hidden">
+            <div class="flex items-center">
+              <img id="weather-icon" class="w-16 h-16 mr-4" alt="Wetter Icon" />
+              <div>
+                <div id="weather-temp" class="text-2xl font-bold"></div>
+                <div id="weather-desc" class="text-gray-700"></div>
+              </div>
+            </div>
+            <div class="text-gray-500 mt-2">
+              Stadt: <span id="weather-city-result"></span>
+            </div>
+          </div>
+
+          <!-- Für Fehlermeldungen -->
+          <div id="weather-error" class="mt-4 text-red-600"></div>
         </div>
       </div>
-
-      <!-- Für Fehlermeldungen -->
-      <div id="weather-error" class="mt-4 text-red-600"></div>
     </div>
   </main>
 </body>
