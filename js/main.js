@@ -110,8 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==============
-  // B) Nur Formular, kein Calendar
-  // (Falls du z. B. ein anderes Layout hast)
+  // B) Nur Formular, kein Calendar (fallback)
   // ==============
   else if (exerciseForm) {
     // Falls es eine Seite gibt, auf der nur das Formular ist, aber kein #calendar
@@ -123,7 +122,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     exerciseForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      // Gleiche Logik wie oben
+      // Gleiche Logik wie oben ...
+    });
+  }
+
+
+  // ==============
+  // C) WETTER (NEU)
+  // ==============
+  const loadWeatherBtn = document.getElementById('load-weather-btn');
+  const weatherCityInput = document.getElementById('weather-city');
+  const weatherResult = document.getElementById('weather-result');
+
+  if (loadWeatherBtn && weatherCityInput && weatherResult) {
+    loadWeatherBtn.addEventListener('click', async () => {
+      const city = weatherCityInput.value.trim() || 'Cottbus';
+
+      try {
+        // Ruft dein eigenes Backend auf
+        // GET /api/weather?city=...
+        const response = await fetch(`${BACKEND_URL}/api/weather?city=${city}`);
+        if (!response.ok) {
+          throw new Error(`Fehler vom Backend: ${response.status}`);
+        }
+        const data = await response.json();
+
+        // data könnte so aussehen: 
+        // {"city":"Cottbus","temperature":18.5,"description":"broken clouds"}
+        if (data.error) {
+          weatherResult.textContent = "Fehler: " + data.error;
+          weatherResult.style.color = 'red';
+        } else {
+          weatherResult.style.color = 'black';
+          weatherResult.innerHTML = `
+            <p><strong>Stadt:</strong> ${data.city}</p>
+            <p><strong>Temperatur:</strong> ${data.temperature} °C</p>
+            <p><strong>Beschreibung:</strong> ${data.description}</p>
+          `;
+        }
+      } catch (err) {
+        weatherResult.textContent = 'Konnte Wetter nicht laden: ' + err.message;
+        weatherResult.style.color = 'red';
+      }
     });
   }
 });

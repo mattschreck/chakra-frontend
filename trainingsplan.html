@@ -21,13 +21,13 @@
   <script defer src="js/nav.js"></script>
   <script defer src="js/main.js"></script>
 
-  <!-- Eigene Styles -->
+  <!-- Deine eigenen Styles -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-50 text-gray-800">
   <!-- Dynamische Navbar -->
   <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10">
-    <!-- nav.js füllt das -->
+    <!-- Wird per nav.js gefüllt -->
   </nav>
 
   <!-- Hauptinhalt Trainingsplan -->
@@ -101,6 +101,28 @@
 
     <!-- FullCalendar-Container -->
     <div id="calendar" class="bg-white p-4 rounded shadow"></div>
+
+    <!-- Wetter-Container -->
+    <div id="weather-container" class="bg-white p-4 rounded shadow mt-6">
+      <h2 class="text-2xl font-bold mb-4">Aktuelles Wetter</h2>
+      <div class="mb-4">
+        <label for="weather-city" class="block font-semibold">Stadt:</label>
+        <input
+          type="text"
+          id="weather-city"
+          class="border border-gray-300 p-2 rounded w-full"
+          placeholder="z.B. Cottbus"
+          value="Cottbus"
+        />
+      </div>
+      <button
+        id="load-weather-btn"
+        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+      >
+        Wetter laden
+      </button>
+      <div id="weather-result" class="mt-4 text-gray-700"></div>
+    </div>
   </main>
 </body>
 </html>
