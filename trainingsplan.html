@@ -25,14 +25,12 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-50 text-gray-800">
-  <!-- Dynamische Navbar -->
-  <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10">
-    <!-- Wird per nav.js gefüllt -->
-  </nav>
+  <!-- Navbar -->
+  <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10"></nav>
 
-  <!-- Hauptinhalt Trainingsplan -->
+  <!-- Main-Bereich: Trainingsplan -->
   <main class="pt-24 pb-16 max-w-screen-2xl mx-auto px-4">
-    <h1 class="text-4xl font-bold text-gray-800 mb-6">Trainingsplan</h1>
+    <h1 class="text-4xl font-bold mb-6">Trainingsplan</h1>
     <p class="text-gray-600 mb-4">
       Hier können Sie Ihren individuellen Trainingsplan einsehen, bearbeiten und neue Übungen hinzufügen.
     </p>
@@ -43,57 +41,35 @@
       <form id="exercise-form" class="space-y-4">
         <div>
           <label for="ex-title" class="block font-semibold">Übungstitel</label>
-          <input
-            type="text"
-            id="ex-title"
-            class="border border-gray-300 p-2 rounded w-full"
-            placeholder="z.B. Bizepscurls"
-            required
-          />
+          <input type="text" id="ex-title" required
+                 class="border border-gray-300 p-2 rounded w-full"
+                 placeholder="z.B. Bizepscurls" />
         </div>
         <div>
           <label for="ex-date" class="block font-semibold">Datum</label>
-          <input
-            type="date"
-            id="ex-date"
-            class="border border-gray-300 p-2 rounded w-full"
-            required
-          />
+          <input type="date" id="ex-date" required
+                 class="border border-gray-300 p-2 rounded w-full" />
         </div>
         <div>
           <label for="ex-weight" class="block font-semibold">Gewicht (kg)</label>
-          <input
-            type="number"
-            id="ex-weight"
-            class="border border-gray-300 p-2 rounded w-full"
-            placeholder="z.B. 12"
-            required
-          />
+          <input type="number" id="ex-weight" required
+                 class="border border-gray-300 p-2 rounded w-full"
+                 placeholder="z.B. 12" />
         </div>
         <div>
           <label for="ex-repetitions" class="block font-semibold">Wiederholungen</label>
-          <input
-            type="number"
-            id="ex-repetitions"
-            class="border border-gray-300 p-2 rounded w-full"
-            placeholder="z.B. 10"
-            required
-          />
+          <input type="number" id="ex-repetitions" required
+                 class="border border-gray-300 p-2 rounded w-full"
+                 placeholder="z.B. 10" />
         </div>
         <div>
           <label for="ex-sets" class="block font-semibold">Sätze</label>
-          <input
-            type="number"
-            id="ex-sets"
-            class="border border-gray-300 p-2 rounded w-full"
-            placeholder="z.B. 3"
-            required
-          />
+          <input type="number" id="ex-sets" required
+                 class="border border-gray-300 p-2 rounded w-full"
+                 placeholder="z.B. 3" />
         </div>
-        <button
-          type="submit"
-          class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-        >
+        <button type="submit"
+                class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
           Hinzufügen
         </button>
       </form>
@@ -102,26 +78,38 @@
     <!-- FullCalendar-Container -->
     <div id="calendar" class="bg-white p-4 rounded shadow"></div>
 
-    <!-- Wetter-Container -->
+    <!-- WETTER-WIDGET -->
     <div id="weather-container" class="bg-white p-4 rounded shadow mt-6">
       <h2 class="text-2xl font-bold mb-4">Aktuelles Wetter</h2>
+
       <div class="mb-4">
         <label for="weather-city" class="block font-semibold">Stadt:</label>
-        <input
-          type="text"
-          id="weather-city"
-          class="border border-gray-300 p-2 rounded w-full"
-          placeholder="z.B. Cottbus"
-          value="Cottbus"
-        />
+        <input type="text" id="weather-city" 
+               class="border border-gray-300 p-2 rounded w-full" 
+               placeholder="z.B. Cottbus"
+               value="Berlin" />
       </div>
-      <button
-        id="load-weather-btn"
-        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-      >
+      <button id="load-weather-btn"
+              class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
         Wetter laden
       </button>
-      <div id="weather-result" class="mt-4 text-gray-700"></div>
+
+      <!-- Hier das Widget -->
+      <div id="weather-widget" class="mt-4 p-4 bg-gray-100 rounded hidden">
+        <div class="flex items-center">
+          <img id="weather-icon" class="w-16 h-16 mr-4" alt="Wetter Icon" />
+          <div>
+            <div id="weather-temp" class="text-2xl font-bold"></div>
+            <div id="weather-desc" class="text-gray-700"></div>
+          </div>
+        </div>
+        <div class="text-gray-500 mt-2">
+          Stadt: <span id="weather-city-result"></span>
+        </div>
+      </div>
+
+      <!-- Für Fehlermeldungen -->
+      <div id="weather-error" class="mt-4 text-red-600"></div>
     </div>
   </main>
 </body>
