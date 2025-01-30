@@ -1,15 +1,28 @@
+// js/main.js
 document.addEventListener('DOMContentLoaded', () => {
-  // Backend-URL flexibel setzen
+  // 1) Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:8080'
-    : 'https://chakra-backend-3783b443f623.herokuapp.com'; // Heroku-Backend-URL
+    : 'https://chakra-backend-3783b443f623.herokuapp.com'; // Heroku-Backend
+  
+  // 2) userId aus localStorage lesen
+  //    => Damit wir GET/POST nur auf "/api/exercises/{userId}" machen können
+  const userId = localStorage.getItem('userId');
+  
+  // 3) Prüfen, ob userId vorhanden ist
+  //    Falls nicht, ist vermutlich niemand eingeloggt
+  //    => Du könntest optional einen Redirect machen:
+  if (!userId) {
+    // alert("Bitte erst einloggen!"); 
+    // window.location.href = "login.html";
+    // oder du machst einfach weiter – je nach gewünschtem Verhalten
+  }
 
-  // Falls du ein Kalender-Element hast
+  // 4) FullCalendar-Setup
   const calendarEl = document.getElementById('calendar');
   let calendar;
 
   if (calendarEl) {
-    // FullCalendar Setup
     calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       locale: 'de',
@@ -18,18 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,listWeek'
       },
-      // Hole Events vom Backend
+      // Hole Events vom Backend -> Nur für diesen userId
       events: {
-        url: `${BACKEND_URL}/api/exercises`,
+        url: `${BACKEND_URL}/api/exercises/${userId}`,  // <--- userId in URL
         method: 'GET',
         failure: () => {
           alert('Fehler beim Laden der Events vom Backend!');
         }
       },
-      // Ergänzung: Benutzerdefinierte Darstellung der Events
       eventContent: function (info) {
         const { title, extendedProps } = info.event;
-        // Rückgabe von benutzerdefiniertem HTML für jedes Event
         return {
           html: `
             <div>
@@ -45,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     calendar.render();
   }
 
-  // Falls ein Übungs-Formular existiert
+  // 5) Formular zum Hinzufügen neuer Übungen
   const exerciseForm = document.getElementById('exercise-form');
   if (exerciseForm) {
     exerciseForm.addEventListener('submit', async (e) => {
@@ -57,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const repetitions = parseInt(document.getElementById('ex-repetitions').value, 10);
       const sets = parseInt(document.getElementById('ex-sets').value, 10);
 
-      // Format für dein Backend/FullCalendar
+      // Neues Event-Objekt
       const newEvent = {
         title,
         start: date,
@@ -67,7 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        const response = await fetch(`${BACKEND_URL}/api/exercises`, {
+        // POST an "/api/exercises/{userId}"
+        const response = await fetch(`${BACKEND_URL}/api/exercises/${userId}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newEvent)
@@ -75,8 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) {
           throw new Error(`Server error: ${response.status}`);
         }
-        // Kalender neu laden
-        calendar.refetchEvents();
+        // Falls alles OK, Kalender neu laden
+        if (calendar) {
+          calendar.refetchEvents();
+        }
+        // Formular zurücksetzen
         exerciseForm.reset();
       } catch (err) {
         console.error('Fehler beim Anlegen einer Übung:', err);

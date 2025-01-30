@@ -1,7 +1,8 @@
+// js/nav.js
 document.addEventListener('DOMContentLoaded', () => {
   // Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
-    ? 'http://localhost:8080' // Lokales Backend
+    ? 'http://localhost:8080'
     : 'https://chakra-backend-3783b443f623.herokuapp.com'; // Heroku-Backend
 
   // --- Navbar ---
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     if (!token) {
-      // Nicht eingeloggt: Login und Register anzeigen
+      // Nicht eingeloggt: Login + Register
       navHtml += `
         <li>
           <a href="login.html" class="text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:text-green-500">
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </li>
       `;
     } else {
-      // Eingeloggt: Nur Account-Icon und Logout anzeigen
+      // Eingeloggt: Account-Symbol + Logout
       navHtml += `
         <li>
           <a href="account.html" class="text-gray-600 hover:text-green-500">
@@ -61,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navHtml += `
         </ul>
-        <!-- Hamburger -->
+        <!-- Hamburger-Menü (mobil) -->
         <button id="menu-toggle" class="lg:hidden text-gray-600 hover:text-green-500">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navbar.innerHTML = navHtml;
 
-    // Logout-Button (Desktop)
+    // Logout
     const logoutBtn = document.getElementById('nav-logout');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', () => {
@@ -150,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('userEmail', data.email);
           }
 
+          // Weiter zur Startseite
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);

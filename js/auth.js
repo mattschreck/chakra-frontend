@@ -1,11 +1,10 @@
 // js/auth.js
 document.addEventListener('DOMContentLoaded', () => {
-  // Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
-    ? 'http://localhost:8080' // Lokales Backend
-    : 'https://chakra-backend-3783b443f623.herokuapp.com'; // Heroku-Backend
+    ? 'http://localhost:8080'
+    : 'https://chakra-backend-3783b443f623.herokuapp.com';
 
-  // --- Registrierung ---
+  // Registrierung
   const regForm = document.getElementById('register-form');
   if (regForm) {
     regForm.addEventListener('submit', async (e) => {
@@ -25,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.success) {
           resultEl.textContent = "Registrierung erfolgreich!";
           resultEl.style.color = "green";
-          // Weiter zur Startseite
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);
@@ -40,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Login ---
+  // Login
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
@@ -60,10 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
           resultEl.textContent = "Login erfolgreich!";
           resultEl.style.color = "green";
 
-          // Token + userId + userName + userEmail speichern
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userId', data.userId);
-
           if (data.name) {
             localStorage.setItem('userName', data.name);
           }
@@ -71,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('userEmail', data.email);
           }
 
-          // Weiter zur Startseite
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);
@@ -86,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Account-Seite ---
+  // Account-Seite
   const accountInfo = document.getElementById('account-info');
   if (accountInfo) {
     const token = localStorage.getItem('authToken');
@@ -95,19 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = localStorage.getItem('userEmail');
 
     if (!token || !userId) {
-      // Nicht eingeloggt -> zurück zur Startseite
       window.location.href = "index.html";
     } else {
-      // Zeige Name und E-Mail an
       accountInfo.innerHTML = `
-        <p class="mb-2"><strong>Name:</strong> ${name || ''}</p>
-        <p class="mb-2"><strong>Email:</strong> ${email || ''}</p>
-        <p class="text-sm text-gray-400">UserID: ${userId}</p>
+        <p><strong>Name:</strong> ${name || ''}</p>
+        <p><strong>Email:</strong> ${email || ''}</p>
+        <p>UserID: ${userId}</p>
       `;
     }
   }
 
-  // --- Logout ---
+  // Logout
   const logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
