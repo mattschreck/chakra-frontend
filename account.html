@@ -17,8 +17,49 @@
   <main class="flex-grow flex items-center justify-center">
     <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
       <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Mein Account</h2>
-      <div id="account-info" class="text-gray-700 mb-6 text-center"></div>
-      <button id="logout-btn" class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition">
+
+      <!-- Anzeige der aktuellen Daten -->
+      <div id="account-info" class="text-gray-700 mb-6 text-center">
+        <!-- auth.js/nav.js setzen hier Name/E-Mail -->
+      </div>
+
+      <!-- Formular zum Ändern von Email/Passwort -->
+      <h3 class="text-xl font-semibold mb-2">Account-Daten ändern</h3>
+      <form id="update-account-form" class="space-y-4 mb-4">
+        <div>
+          <label for="new-email" class="block font-semibold">Neue E-Mail (optional)</label>
+          <input 
+            type="email" 
+            id="new-email"
+            class="border border-gray-300 p-2 rounded w-full"
+            placeholder="Neue E-Mail eintragen (optional)"
+          />
+        </div>
+        <div>
+          <label for="new-password" class="block font-semibold">Neues Passwort (optional)</label>
+          <input 
+            type="password" 
+            id="new-password"
+            class="border border-gray-300 p-2 rounded w-full"
+            placeholder="Neues Passwort eintragen (optional)"
+          />
+        </div>
+        <button 
+          type="submit"
+          class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
+        >
+          Speichern
+        </button>
+      </form>
+
+      <!-- Meldungen nach dem Speichern (Erfolg/Fehler) -->
+      <p id="update-result" class="text-center text-sm"></p>
+
+      <!-- Logout -->
+      <button 
+        id="logout-btn" 
+        class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition mt-6"
+      >
         Logout
       </button>
     </div>
