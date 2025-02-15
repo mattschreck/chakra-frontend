@@ -8,20 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const calendarEl = document.getElementById('calendar');
   const exerciseForm = document.getElementById('exercise-form');
 
-  // =======================
-  // A) FullCalendar
-  // =======================
+  // FULLCALENDAR
   if (calendarEl) {
     if (!userId) {
       calendarEl.innerHTML = `
         <div class="bg-red-100 text-red-700 p-4 rounded">
-          Bitte logge dich ein oder registriere dich, um deinen persönlichen Trainingsplan zu sehen.
+          Bitte logge dich ein oder registriere dich, um deinen Trainingsplan zu sehen.
         </div>
       `;
     } else {
+      // firstDay: 1 => Montag als Wochenstart
+      // dayMaxEventRows => begrenzt die Höhe
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'de',
+        firstDay: 1,
+        dayMaxEventRows: 3,
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
@@ -30,48 +32,42 @@ document.addEventListener('DOMContentLoaded', () => {
         events: {
           url: `${BACKEND_URL}/api/exercises/${userId}`,
           method: 'GET',
-          failure: () => {
-            alert('Fehler beim Laden der Events vom Backend!');
-          }
+          failure: () => alert('Fehler beim Laden der Events!')
         },
         eventContent: (info) => {
           const { title, extendedProps } = info.event;
           return {
             html: `
               <div>
-                <strong>${title}</strong><br />
-                Gewicht: ${extendedProps.weight} kg<br />
-                Sätze: ${extendedProps.sets}<br />
+                <strong>${title}</strong><br/>
+                Gewicht: ${extendedProps.weight} kg<br/>
+                Sätze: ${extendedProps.sets}<br/>
                 Wiederholungen: ${extendedProps.repetitions}
               </div>
             `
           };
         },
         eventClick: (info) => {
-          // Klick -> Modal
           window.currentExerciseId = info.event.id;
-
-          // Daten füllen
           document.getElementById('modal-title').textContent = info.event.title || '-';
           document.getElementById('modal-date').textContent = info.event.startStr || '-';
           document.getElementById('modal-weight').textContent = info.event.extendedProps.weight ?? '-';
           document.getElementById('modal-sets').textContent = info.event.extendedProps.sets ?? '-';
           document.getElementById('modal-reps').textContent = info.event.extendedProps.repetitions ?? '-';
-
           document.getElementById('delete-modal').classList.remove('hidden');
         }
       });
       calendar.render();
 
-      // Formular -> Neue Übung
+      // FORMULAR => Neue Übung
       if (exerciseForm) {
         exerciseForm.addEventListener('submit', async (e) => {
           e.preventDefault();
+
           if (!userId) {
             alert("Bitte logge dich ein, um eine Übung hinzuzufügen!");
             return;
           }
-
           const title = document.getElementById('ex-title').value.trim();
           const date = document.getElementById('ex-date').value;
           const weight = parseInt(document.getElementById('ex-weight').value, 10);
@@ -94,9 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(newEvent)
             });
-            if (!response.ok) {
-              throw new Error(`Server error: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
             calendar.refetchEvents();
             exerciseForm.reset();
           } catch (err) {
@@ -106,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // MODAL-Löschen
+      // MODAL => Löschen
       const deleteModal = document.getElementById('delete-modal');
       const btnCloseModal = document.getElementById('btn-close-modal');
       const btnDeleteExercise = document.getElementById('btn-delete-exercise');
@@ -114,21 +108,19 @@ document.addEventListener('DOMContentLoaded', () => {
       btnCloseModal.addEventListener('click', () => {
         deleteModal.classList.add('hidden');
       });
-
       btnDeleteExercise.addEventListener('click', async () => {
         const sure = confirm("Wirklich löschen?");
         if (!sure) return;
+
         const exerciseId = window.currentExerciseId;
         if (!exerciseId) {
           alert("Kein Event selektiert?");
           return;
         }
         try {
-          const delURL = `${BACKEND_URL}/api/exercises/${userId}/${exerciseId}`;
-          const response = await fetch(delURL, { method: 'DELETE' });
-          if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
-          }
+          const url = `${BACKEND_URL}/api/exercises/${userId}/${exerciseId}`;
+          const response = await fetch(url, { method: 'DELETE' });
+          if (!response.ok) throw new Error(`Server error: ${response.status}`);
           const data = await response.json();
           if (data.success) {
             calendar.refetchEvents();
@@ -138,13 +130,13 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } catch (err) {
           console.error('Löschfehler:', err);
-          alert('Konnte nicht löschen!');
+          alert("Konnte nicht löschen!");
         }
       });
     }
   }
 
-  // 2) WETTER-WIDGET
+  // WETTER
   const loadWeatherBtn = document.getElementById('load-weather-btn');
   const weatherCityInput = document.getElementById('weather-city');
   const weatherWidget = document.getElementById('weather-widget');
@@ -162,11 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const city = weatherCityInput.value.trim() || 'Berlin';
       try {
         const response = await fetch(`${BACKEND_URL}/api/weather?city=${city}`);
-        if (!response.ok) {
-          throw new Error(`Fehler vom Backend: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Fehler vom Backend: ${response.status}`);
         const data = await response.json();
-
         if (data.error) {
           weatherError.textContent = 'Fehler: ' + data.error;
           weatherError.style.color = 'red';
@@ -184,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3) STATISTIK (Kreisdiagramm)
+  // STATISTIK (Doughnut)
   const statsBtn = document.getElementById('stats-btn');
   const statsResult = document.getElementById('stats-result');
   const statsChartCanvas = document.getElementById('stats-chart');
@@ -212,16 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
           throw new Error(`Server-Fehler: ${response.status}`);
         }
         const data = await response.json();
-        // e.g. { "Arme": 2, "Beine": 1 }
-
         const keys = Object.keys(data);
+
         if (keys.length === 0) {
           statsResult.textContent = "Keine Einträge im gewählten Zeitraum!";
           statsResult.style.color = 'red';
-          if (statsChart) {
-            statsChart.destroy();
-            statsChart = null;
-          }
+          if (statsChart) statsChart.destroy();
+          statsChart = null;
           return;
         }
 
@@ -235,31 +221,24 @@ document.addEventListener('DOMContentLoaded', () => {
           values.push(data[bp]);
         }
 
-        if (statsChart) {
-          statsChart.destroy();
-        }
+        if (statsChart) statsChart.destroy();
+
+        // -> Doughtnut statt Pie
         statsChart = new Chart(statsChartCanvas, {
-          type: 'pie',
+          type: 'doughnut',
           data: {
             labels,
             datasets: [{
               data: values,
               backgroundColor: [
-                '#f87171',
-                '#fbbf24',
-                '#34d399',
-                '#60a5fa',
-                '#a78bfa',
-                '#f472b6',
+                '#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6',
               ]
             }]
           },
           options: {
             responsive: false,
-            plugins: {
-              legend: {
-                position: 'bottom'
-              }
+            legend: {
+              position: 'bottom'
             }
           }
         });
