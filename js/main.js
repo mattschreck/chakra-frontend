@@ -1,28 +1,24 @@
 // js/main.js
 document.addEventListener('DOMContentLoaded', () => {
-  // Dynamische Backend-URL
   const BACKEND_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:8080'
-    : 'https://chakra-backend-3783b443f623.herokuapp.com'; // ggf. anpassen
+    : 'https://chakra-backend-3783b443f623.herokuapp.com';
 
-  // ID des eingeloggten Users
   const userId = localStorage.getItem('userId');
-
-  // Kalender-Element und Formular
   const calendarEl = document.getElementById('calendar');
   const exerciseForm = document.getElementById('exercise-form');
 
-  // 1) FULLCALENDAR
+  // =======================
+  // A) FullCalendar
+  // =======================
   if (calendarEl) {
     if (!userId) {
-      // Nicht eingeloggt
       calendarEl.innerHTML = `
         <div class="bg-red-100 text-red-700 p-4 rounded">
           Bitte logge dich ein oder registriere dich, um deinen persönlichen Trainingsplan zu sehen.
         </div>
       `;
     } else {
-      // Eingeloggt -> FullCalendar
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'de',
@@ -40,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         eventContent: (info) => {
           const { title, extendedProps } = info.event;
-          // extendedProps enthält: weight, repetitions, sets, bodyPart, etc.
           return {
             html: `
               <div>
@@ -53,35 +48,25 @@ document.addEventListener('DOMContentLoaded', () => {
           };
         },
         eventClick: (info) => {
-          // Klick auf ein Event -> Modal
-          const exId = info.event.id;
-          const title = info.event.title;
-          const start = info.event.startStr;
-          const weight = info.event.extendedProps.weight;
-          const sets = info.event.extendedProps.sets;
-          const reps = info.event.extendedProps.repetitions;
+          // Klick -> Modal
+          window.currentExerciseId = info.event.id;
 
-          // Modal-Felder
-          document.getElementById('modal-title').textContent = title || 'Keine Angabe';
-          document.getElementById('modal-date').textContent = start || '-';
-          document.getElementById('modal-weight').textContent = weight != null ? weight : '-';
-          document.getElementById('modal-sets').textContent = sets != null ? sets : '-';
-          document.getElementById('modal-reps').textContent = reps != null ? reps : '-';
+          // Daten füllen
+          document.getElementById('modal-title').textContent = info.event.title || '-';
+          document.getElementById('modal-date').textContent = info.event.startStr || '-';
+          document.getElementById('modal-weight').textContent = info.event.extendedProps.weight ?? '-';
+          document.getElementById('modal-sets').textContent = info.event.extendedProps.sets ?? '-';
+          document.getElementById('modal-reps').textContent = info.event.extendedProps.repetitions ?? '-';
 
-          // Speichere die ID global
-          window.currentExerciseId = exId;
-
-          // Zeige Modal
           document.getElementById('delete-modal').classList.remove('hidden');
         }
       });
       calendar.render();
 
-      // FORMULAR: Neue Übung
+      // Formular -> Neue Übung
       if (exerciseForm) {
         exerciseForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-
           if (!userId) {
             alert("Bitte logge dich ein, um eine Übung hinzuzufügen!");
             return;
@@ -92,10 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
           const weight = parseInt(document.getElementById('ex-weight').value, 10);
           const repetitions = parseInt(document.getElementById('ex-repetitions').value, 10);
           const sets = parseInt(document.getElementById('ex-sets').value, 10);
-          // Neu: bodyPart
           const bodyPart = document.getElementById('ex-bodypart').value;
 
-          const newEvent = {
+          const newEvent = { 
             title,
             start: date,
             weight,
@@ -113,9 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
               throw new Error(`Server error: ${response.status}`);
             }
-            // Kalender neu laden
             calendar.refetchEvents();
-            // Formular leeren
             exerciseForm.reset();
           } catch (err) {
             console.error('Fehler beim Anlegen einer Übung:', err);
@@ -124,36 +106,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // MODAL-Logik (Löschen)
+      // MODAL-Löschen
       const deleteModal = document.getElementById('delete-modal');
       const btnCloseModal = document.getElementById('btn-close-modal');
       const btnDeleteExercise = document.getElementById('btn-delete-exercise');
 
-      // Schließen
       btnCloseModal.addEventListener('click', () => {
         deleteModal.classList.add('hidden');
       });
 
-      // Löschen-Button
       btnDeleteExercise.addEventListener('click', async () => {
         const sure = confirm("Wirklich löschen?");
         if (!sure) return;
-
         const exerciseId = window.currentExerciseId;
         if (!exerciseId) {
           alert("Kein Event selektiert?");
           return;
         }
-
         try {
-          const deleteUrl = `${BACKEND_URL}/api/exercises/${userId}/${exerciseId}`;
-          const response = await fetch(deleteUrl, { method: 'DELETE' });
+          const delURL = `${BACKEND_URL}/api/exercises/${userId}/${exerciseId}`;
+          const response = await fetch(delURL, { method: 'DELETE' });
           if (!response.ok) {
             throw new Error(`Server error: ${response.status}`);
           }
           const data = await response.json();
           if (data.success) {
-            // Erfolg -> Kalender aktualisieren
             calendar.refetchEvents();
             deleteModal.classList.add('hidden');
           } else {
@@ -235,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
           throw new Error(`Server-Fehler: ${response.status}`);
         }
         const data = await response.json();
-        // z. B. { "Arme": 2, "Beine": 1 }
+        // e.g. { "Arme": 2, "Beine": 1 }
 
         const keys = Object.keys(data);
         if (keys.length === 0) {
@@ -268,13 +245,12 @@ document.addEventListener('DOMContentLoaded', () => {
             datasets: [{
               data: values,
               backgroundColor: [
-                '#f87171', // rot
-                '#fbbf24', // gelb
-                '#34d399', // grün
-                '#60a5fa', // blau
-                '#a78bfa', // lila
-                '#f472b6', // pink
-                // mehr Farben, falls nötig
+                '#f87171',
+                '#fbbf24',
+                '#34d399',
+                '#60a5fa',
+                '#a78bfa',
+                '#f472b6',
               ]
             }]
           },

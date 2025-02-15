@@ -17,14 +17,14 @@
     src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"
   ></script>
 
-  <!-- Chart.js (für Kreisdiagramm) -->
+  <!-- Chart.js: WICHTIG: Vor main.js laden, damit 'Chart' definiert ist -->
   <script 
-    src="https://cdn.jsdelivr.net/npm/chart.js" 
+    src="https://cdn.jsdelivr.net/npm/chart.js"
     integrity="sha384-lLtTDJ2AYEHSnr5n4IF63czZhDDuAI/2Y3ebZ6nOeXgo09NwRs3FeMOpb4Tu0ZLi"
     crossorigin="anonymous"
   ></script>
 
-  <!-- nav.js + main.js -->
+  <!-- nav.js + main.js (defer) -->
   <script defer src="js/nav.js"></script>
   <script defer src="js/main.js"></script>
 
@@ -96,7 +96,7 @@
           />
         </div>
 
-        <!-- Neu: bodyPart -->
+        <!-- Körperpartie -->
         <div>
           <label for="ex-bodypart" class="block font-semibold">Körperpartie</label>
           <select 
@@ -122,14 +122,14 @@
       </form>
     </div>
 
-    <!-- Flex-Container: Kalender links, Wetter / Statistik rechts -->
+    <!-- Flex-Container: Kalender links, Wetter/Statistik rechts -->
     <div class="md:flex md:space-x-6">
       <!-- FullCalendar-Container (links) -->
       <div class="md:w-3/4 mb-6 md:mb-0">
         <div id="calendar" class="bg-white p-4 rounded shadow"></div>
       </div>
 
-      <!-- Rechte Spalte: Wetter-Widget + Statistik -->
+      <!-- Rechte Spalte: Wetter + Statistik -->
       <div class="md:w-1/4 space-y-6">
         <!-- Wetter-Widget -->
         <div id="weather-container" class="bg-white p-4 rounded shadow">
@@ -173,7 +173,6 @@
             </div>
           </div>
 
-          <!-- Fehlermeldung -->
           <div id="weather-error" class="mt-4 text-red-600"></div>
         </div>
 
@@ -181,35 +180,33 @@
         <div id="stats-container" class="bg-white p-4 rounded shadow">
           <h2 class="text-2xl font-bold mb-4">Statistik</h2>
 
-          <div class="mb-4 flex space-x-2">
-            <div>
-              <label for="stats-start" class="block font-semibold">Von:</label>
-              <input 
-                type="date" 
-                id="stats-start"
-                class="border border-gray-300 p-2 rounded" 
-              />
-            </div>
-            <div>
-              <label for="stats-end" class="block font-semibold">Bis:</label>
-              <input 
-                type="date" 
-                id="stats-end"
-                class="border border-gray-300 p-2 rounded"
-              />
-            </div>
+          <!-- Zeiträume jetzt untereinander -->
+          <div class="mb-4">
+            <label for="stats-start" class="block font-semibold">Von:</label>
+            <input 
+              type="date" 
+              id="stats-start"
+              class="border border-gray-300 p-2 rounded w-full" 
+            />
+          </div>
+          <div class="mb-4">
+            <label for="stats-end" class="block font-semibold">Bis:</label>
+            <input 
+              type="date" 
+              id="stats-end"
+              class="border border-gray-300 p-2 rounded w-full"
+            />
           </div>
 
           <button 
             id="stats-btn" 
-            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full"
           >
             Statistik anzeigen
           </button>
 
           <div id="stats-result" class="mt-4 text-gray-700"></div>
-
-          <!-- Chart Container -->
+          <!-- Canvas für Kreisdiagramm -->
           <canvas id="stats-chart" class="mt-4" width="400" height="400"></canvas>
         </div>
       </div>
@@ -222,15 +219,8 @@
     class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div class="bg-white rounded-lg p-6 w-full max-w-md">
-      <!-- Titel -->
-      <h3 
-        id="modal-title" 
-        class="text-xl font-bold mb-4"
-      >
-        Übungstitel
-      </h3>
+      <h3 id="modal-title" class="text-xl font-bold mb-4">Übungstitel</h3>
 
-      <!-- Details -->
       <p class="mb-2">
         <strong>Gewicht:</strong> 
         <span id="modal-weight"></span> kg
@@ -248,7 +238,6 @@
         <span id="modal-date"></span>
       </p>
 
-      <!-- Buttons -->
       <div class="flex justify-end space-x-4">
         <button 
           id="btn-close-modal" 
