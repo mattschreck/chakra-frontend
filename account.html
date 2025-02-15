@@ -14,51 +14,77 @@
   <!-- Navbar dynamisch -->
   <nav id="navbar" class="bg-white border-b border-gray-200"></nav>
 
-  <main class="flex-grow flex items-center justify-center">
+  <main class="flex-grow flex items-center justify-center p-4">
     <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
       <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Mein Account</h2>
 
       <!-- Anzeige der aktuellen Daten -->
-      <div id="account-info" class="text-gray-700 mb-6 text-center">
-        <!-- auth.js/nav.js setzen hier Name/E-Mail -->
+      <div id="account-info" class="text-gray-700 mb-6">
+        <!-- auth.js füllt hier Name/E-Mail etc. -->
       </div>
 
-      <!-- Formular zum Ändern von Email/Passwort -->
-      <h3 class="text-xl font-semibold mb-2">Account-Daten ändern</h3>
-      <form id="update-account-form" class="space-y-4 mb-4">
+      <div class="space-y-6">
+        <!-- E-Mail ändern -->
         <div>
-          <label for="new-email" class="block font-semibold">Neue E-Mail (optional)</label>
-          <input 
-            type="email" 
-            id="new-email"
-            class="border border-gray-300 p-2 rounded w-full"
-            placeholder="Neue E-Mail eintragen (optional)"
-          />
-        </div>
-        <div>
-          <label for="new-password" class="block font-semibold">Neues Passwort (optional)</label>
-          <input 
-            type="password" 
-            id="new-password"
-            class="border border-gray-300 p-2 rounded w-full"
-            placeholder="Neues Passwort eintragen (optional)"
-          />
-        </div>
-        <button 
-          type="submit"
-          class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
-        >
-          Speichern
-        </button>
-      </form>
+          <button 
+            id="btn-show-email-edit" 
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          >
+            E-Mail ändern
+          </button>
 
-      <!-- Meldungen nach dem Speichern (Erfolg/Fehler) -->
-      <p id="update-result" class="text-center text-sm"></p>
+          <!-- E-Mail-Edit-Feld (anfangs hidden) -->
+          <form id="email-edit-form" class="mt-2 hidden">
+            <label for="new-email" class="block font-semibold mb-1">Neue E-Mail</label>
+            <input 
+              type="email"
+              id="new-email"
+              class="border border-gray-300 p-2 rounded w-full mb-2"
+              placeholder="Neue E-Mail"
+            />
+            <button 
+              type="submit"
+              class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            >
+              Speichern
+            </button>
+            <span id="email-edit-result" class="text-sm ml-2"></span>
+          </form>
+        </div>
+
+        <!-- Passwort ändern -->
+        <div>
+          <button 
+            id="btn-show-pw-edit"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          >
+            Passwort ändern
+          </button>
+
+          <!-- PW-Edit-Feld (anfangs hidden) -->
+          <form id="pw-edit-form" class="mt-2 hidden">
+            <label for="new-password" class="block font-semibold mb-1">Neues Passwort</label>
+            <input 
+              type="password" 
+              id="new-password"
+              class="border border-gray-300 p-2 rounded w-full mb-2"
+              placeholder="Neues Passwort"
+            />
+            <button 
+              type="submit"
+              class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            >
+              Speichern
+            </button>
+            <span id="pw-edit-result" class="text-sm ml-2"></span>
+          </form>
+        </div>
+      </div>
 
       <!-- Logout -->
       <button 
         id="logout-btn" 
-        class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition mt-6"
+        class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition mt-8"
       >
         Logout
       </button>
