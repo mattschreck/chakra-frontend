@@ -1,24 +1,30 @@
 // js/main.js
 document.addEventListener('DOMContentLoaded', () => {
+  // 1) Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:8080'
     : 'https://chakra-backend-3783b443f623.herokuapp.com';
 
-  // ====== Trainingsplan & FullCalendar ======
+  // 2) userId aus localStorage lesen
   const userId = localStorage.getItem('userId');
+
+  // 3) Element-Referenzen
   const calendarEl = document.getElementById('calendar');
   const exerciseForm = document.getElementById('exercise-form');
 
+  // =======================
+  // A) FullCalendar / Trainingsplan
+  // =======================
   if (calendarEl) {
+    // Wenn nicht eingeloggt -> Hinweis
     if (!userId) {
-      // Nicht eingeloggt
       calendarEl.innerHTML = `
         <div class="bg-red-100 text-red-700 p-4 rounded">
           Bitte logge dich ein oder registriere dich, um deinen persönlichen Trainingsplan zu sehen.
         </div>
       `;
     } else {
-      // Eingeloggt -> FullCalendar Setup
+      // Eingeloggt -> FullCalendar aufsetzen
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'de',
@@ -27,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,listWeek'
         },
+        // EVENTS laden
         events: {
           url: `${BACKEND_URL}/api/exercises/${userId}`,
           method: 'GET',
@@ -34,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Fehler beim Laden der Events vom Backend!');
           }
         },
+        // Darstellung der Events (title, extendedProps)
         eventContent: (info) => {
           const { title, extendedProps } = info.event;
           return {
@@ -46,14 +54,48 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
             `
           };
+        },
+        // NEU: Klick auf ein Event -> Löschen
+        eventClick: async (info) => {
+          // FullCalendar nimmt "id" aus deinem JSON => info.event.id
+          const exerciseId = info.event.id;
+          const eventTitle = info.event.title;
+
+          // Sicherheitsabfrage
+          const confirmDel = confirm(`Möchten Sie "${eventTitle}" wirklich löschen?`);
+          if (!confirmDel) return;
+
+          try {
+            // DELETE /api/exercises/{userId}/{exerciseId}
+            const deleteUrl = `${BACKEND_URL}/api/exercises/${userId}/${exerciseId}`;
+            const response = await fetch(deleteUrl, {
+              method: 'DELETE'
+            });
+            if (!response.ok) {
+              throw new Error(`Server error: ${response.status}`);
+            }
+            const data = await response.json();
+            if (data.success) {
+              // Erfolg -> Kalender neu laden
+              calendar.refetchEvents();
+            } else {
+              alert('Fehler beim Löschen: ' + data.message);
+            }
+          } catch (err) {
+            console.error('Löschfehler:', err);
+            alert('Konnte nicht löschen!');
+          }
         }
       });
+
       calendar.render();
 
-      // Formular -> Neue Übung
+      // Formular zum Hinzufügen neuer Übungen
       if (exerciseForm) {
         exerciseForm.addEventListener('submit', async (e) => {
           e.preventDefault();
+
+          // Falls localStorage sich geändert hat
           if (!userId) {
             alert("Bitte logge dich ein, um eine Übung hinzuzufügen!");
             return;
@@ -65,9 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
           const repetitions = parseInt(document.getElementById('ex-repetitions').value, 10);
           const sets = parseInt(document.getElementById('ex-sets').value, 10);
 
-          const newEvent = { title, start: date, weight, repetitions, sets };
+          // Neues Event-Objekt (Exercise)
+          const newEvent = { 
+            title, 
+            start: date, 
+            weight, 
+            repetitions, 
+            sets 
+          };
 
           try {
+            // POST /api/exercises/{userId}
             const response = await fetch(`${BACKEND_URL}/api/exercises/${userId}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -76,7 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
               throw new Error(`Server error: ${response.status}`);
             }
+            // Erfolg -> Kalender neu laden
             calendar.refetchEvents();
+            // Formular leeren
             exerciseForm.reset();
           } catch (err) {
             console.error('Fehler beim Anlegen einer Übung:', err);
@@ -85,13 +137,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     }
-  } else if (exerciseForm) {
-    // Falls andere Seite
-    // ...
+  } 
+  // Falls es eine Seite ohne #calendar gibt, aber nur ein Formular
+  else if (exerciseForm) {
+    if (!userId) {
+      alert("Bitte logge dich ein oder registriere dich, um Übungen hinzuzufügen!");
+      return;
+    }
+    // ... analog ...
   }
 
-
-  // ====== WETTER-WIDGET ======
+  // =======================
+  // B) WETTER-WIDGET
+  // =======================
   const loadWeatherBtn = document.getElementById('load-weather-btn');
   const weatherCityInput = document.getElementById('weather-city');
   const weatherWidget = document.getElementById('weather-widget');
@@ -104,8 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (loadWeatherBtn && weatherCityInput && weatherWidget) {
     loadWeatherBtn.addEventListener('click', async () => {
       const city = weatherCityInput.value.trim() || 'Berlin';
-      weatherError.textContent = ''; // evtl. alten Error löschen
-      weatherWidget.classList.add('hidden'); // Widget ausblenden, bis neue Daten da sind
+      weatherError.textContent = '';
+      weatherWidget.classList.add('hidden');
 
       try {
         // GET /api/weather?city=...
@@ -115,24 +173,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const data = await response.json();
 
-        // data: {"city":"Berlin","temperature":12.34,"description":"few clouds","icon":"02d"}
         if (data.error) {
           weatherError.textContent = 'Fehler: ' + data.error;
           weatherError.style.color = 'red';
         } else {
-          // Setze Icon
-          const iconCode = data.icon; // z.B. "02d"
+          // Icon, Temperatur, Beschreibung, Stadt
+          const iconCode = data.icon;
           const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
           weatherIcon.src = iconUrl;
 
-          // Temperatur
           weatherTemp.textContent = data.temperature.toFixed(1) + ' °C';
-          // Beschreibung
           weatherDesc.textContent = data.description;
-          // Stadt
           weatherCityResult.textContent = data.city;
 
-          // Widget sichtbar machen
           weatherWidget.classList.remove('hidden');
         }
       } catch (err) {
