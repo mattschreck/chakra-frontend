@@ -17,10 +17,10 @@
     src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"
   ></script>
 
-  <!-- CHART.JS 2.9.4 from w3schools example (SYNCHRON, ohne defer!) -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-  </script>
+  <!-- CHART.JS 2.9.4 von w3schools-Beispiel (SYNCHRON, NICHT defer) -->
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"
+  ></script>
 
   <!-- nav.js + main.js (defer) -->
   <script defer src="js/nav.js"></script>
@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-50 text-gray-800">
+
   <!-- Navbar -->
   <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10"></nav>
 
@@ -43,6 +44,7 @@
     <div class="bg-white p-4 rounded shadow mb-6">
       <h2 class="text-2xl font-bold mb-4">Neue Übung</h2>
       <form id="exercise-form" class="space-y-4">
+        <!-- Titel -->
         <div>
           <label for="ex-title" class="block font-semibold">Übungstitel</label>
           <input 
@@ -53,6 +55,7 @@
             placeholder="z.B. Bizepscurls" 
           />
         </div>
+        <!-- Datum -->
         <div>
           <label for="ex-date" class="block font-semibold">Datum</label>
           <input 
@@ -62,6 +65,7 @@
             class="border border-gray-300 p-2 rounded w-full" 
           />
         </div>
+        <!-- Gewicht -->
         <div>
           <label for="ex-weight" class="block font-semibold">Gewicht (kg)</label>
           <input 
@@ -72,6 +76,7 @@
             placeholder="z.B. 12" 
           />
         </div>
+        <!-- Wiederholungen -->
         <div>
           <label for="ex-repetitions" class="block font-semibold">Wiederholungen</label>
           <input 
@@ -82,6 +87,7 @@
             placeholder="z.B. 10" 
           />
         </div>
+        <!-- Sätze -->
         <div>
           <label for="ex-sets" class="block font-semibold">Sätze</label>
           <input 
@@ -92,6 +98,7 @@
             placeholder="z.B. 3" 
           />
         </div>
+        <!-- Körperpartie -->
         <div>
           <label for="ex-bodypart" class="block font-semibold">Körperpartie</label>
           <select 
@@ -117,13 +124,14 @@
       </form>
     </div>
 
-    <!-- Flex: Kalender links, Wetter + Statistik rechts -->
+    <!-- Flex-Container: Kalender links, Wetter + Statistik rechts -->
     <div class="md:flex md:space-x-6">
+      <!-- FullCalendar-Container (links) -->
       <div class="md:w-3/4 mb-6 md:mb-0">
-        <!-- FullCalendar -->
         <div id="calendar" class="bg-white p-4 rounded shadow"></div>
       </div>
 
+      <!-- Rechte Spalte: Wetter + Statistik -->
       <div class="md:w-1/4 space-y-6">
         <!-- Wetter-Widget -->
         <div id="weather-container" class="bg-white p-4 rounded shadow">
@@ -166,16 +174,17 @@
           <div id="weather-error" class="mt-4 text-red-600"></div>
         </div>
 
-        <!-- Statistik + Chart -->
+        <!-- Statistik-Bereich mit fixierter Chart-Größe -->
         <div id="stats-container" class="bg-white p-4 rounded shadow">
           <h2 class="text-2xl font-bold mb-4">Statistik</h2>
-          
+
+          <!-- Zeitangaben untereinander -->
           <div class="mb-4">
             <label for="stats-start" class="block font-semibold">Von:</label>
             <input 
               type="date" 
               id="stats-start"
-              class="border border-gray-300 p-2 rounded w-full" 
+              class="border border-gray-300 p-2 rounded w-full"
             />
           </div>
           <div class="mb-4">
@@ -188,7 +197,7 @@
           </div>
 
           <button 
-            id="stats-btn" 
+            id="stats-btn"
             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full"
           >
             Statistik anzeigen
@@ -196,32 +205,52 @@
 
           <div id="stats-result" class="mt-4 text-gray-700"></div>
 
-          <!-- Canvas für Doughnut-Chart -->
-          <canvas id="stats-chart" class="mt-4" width="400" height="400"></canvas>
+          <!-- Fixierte Größe: 48 Tailwind => 12rem => 192px -->
+          <div class="mt-4 w-48 h-48 mx-auto bg-gray-50">
+            <canvas id="stats-chart"></canvas>
+          </div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- MODAL -->
+  <!-- MODAL zum Anzeigen + Löschen einer Übung -->
   <div 
     id="delete-modal" 
     class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div class="bg-white rounded-lg p-6 w-full max-w-md">
       <h3 id="modal-title" class="text-xl font-bold mb-4">Übungstitel</h3>
-      <p class="mb-2"><strong>Gewicht:</strong> <span id="modal-weight"></span> kg</p>
-      <p class="mb-2"><strong>Sätze:</strong> <span id="modal-sets"></span></p>
-      <p class="mb-2"><strong>Wiederholungen:</strong> <span id="modal-reps"></span></p>
-      <p class="mb-4"><strong>Datum:</strong> <span id="modal-date"></span></p>
+      <p class="mb-2">
+        <strong>Gewicht:</strong> 
+        <span id="modal-weight"></span> kg
+      </p>
+      <p class="mb-2">
+        <strong>Sätze:</strong> 
+        <span id="modal-sets"></span>
+      </p>
+      <p class="mb-2">
+        <strong>Wiederholungen:</strong> 
+        <span id="modal-reps"></span>
+      </p>
+      <p class="mb-4">
+        <strong>Datum:</strong> 
+        <span id="modal-date"></span>
+      </p>
 
       <div class="flex justify-end space-x-4">
-        <button id="btn-close-modal"
+        <button 
+          id="btn-close-modal" 
           class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
-        >Abbrechen</button>
-        <button id="btn-delete-exercise"
+        >
+          Abbrechen
+        </button>
+        <button 
+          id="btn-delete-exercise" 
           class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-md"
-        >Löschen</button>
+        >
+          Löschen
+        </button>
       </div>
     </div>
   </div>

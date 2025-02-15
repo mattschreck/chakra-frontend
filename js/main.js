@@ -13,17 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!userId) {
       calendarEl.innerHTML = `
         <div class="bg-red-100 text-red-700 p-4 rounded">
-          Bitte logge dich ein oder registriere dich, um deinen Trainingsplan zu sehen.
+          Bitte logge dich ein oder registriere dich, um deinen persönlichen Trainingsplan zu sehen.
         </div>
       `;
     } else {
-      // firstDay: 1 => Montag als Wochenstart
-      // dayMaxEventRows => begrenzt die Höhe
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'de',
-        firstDay: 1,
-        dayMaxEventRows: 3,
+        firstDay: 1,           // Montag als Wochenstart
+        dayMaxEventRows: 3,    // begrenzt Höhe pro Tag
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
@@ -32,42 +30,47 @@ document.addEventListener('DOMContentLoaded', () => {
         events: {
           url: `${BACKEND_URL}/api/exercises/${userId}`,
           method: 'GET',
-          failure: () => alert('Fehler beim Laden der Events!')
+          failure: () => {
+            alert('Fehler beim Laden der Events vom Backend!');
+          }
         },
         eventContent: (info) => {
           const { title, extendedProps } = info.event;
           return {
             html: `
               <div>
-                <strong>${title}</strong><br/>
-                Gewicht: ${extendedProps.weight} kg<br/>
-                Sätze: ${extendedProps.sets}<br/>
+                <strong>${title}</strong><br />
+                Gewicht: ${extendedProps.weight} kg<br />
+                Sätze: ${extendedProps.sets}<br />
                 Wiederholungen: ${extendedProps.repetitions}
               </div>
             `
           };
         },
         eventClick: (info) => {
+          // Klick -> Modal
           window.currentExerciseId = info.event.id;
+
           document.getElementById('modal-title').textContent = info.event.title || '-';
           document.getElementById('modal-date').textContent = info.event.startStr || '-';
           document.getElementById('modal-weight').textContent = info.event.extendedProps.weight ?? '-';
           document.getElementById('modal-sets').textContent = info.event.extendedProps.sets ?? '-';
           document.getElementById('modal-reps').textContent = info.event.extendedProps.repetitions ?? '-';
+
           document.getElementById('delete-modal').classList.remove('hidden');
         }
       });
       calendar.render();
 
-      // FORMULAR => Neue Übung
+      // Formular -> Neue Übung
       if (exerciseForm) {
         exerciseForm.addEventListener('submit', async (e) => {
           e.preventDefault();
-
           if (!userId) {
             alert("Bitte logge dich ein, um eine Übung hinzuzufügen!");
             return;
           }
+
           const title = document.getElementById('ex-title').value.trim();
           const date = document.getElementById('ex-date').value;
           const weight = parseInt(document.getElementById('ex-weight').value, 10);
@@ -90,7 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(newEvent)
             });
-            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+            if (!response.ok) {
+              throw new Error(`Server error: ${response.status}`);
+            }
             calendar.refetchEvents();
             exerciseForm.reset();
           } catch (err) {
@@ -100,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // MODAL => Löschen
+      // MODAL -> Löschen
       const deleteModal = document.getElementById('delete-modal');
       const btnCloseModal = document.getElementById('btn-close-modal');
       const btnDeleteExercise = document.getElementById('btn-delete-exercise');
@@ -108,19 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
       btnCloseModal.addEventListener('click', () => {
         deleteModal.classList.add('hidden');
       });
+
       btnDeleteExercise.addEventListener('click', async () => {
         const sure = confirm("Wirklich löschen?");
         if (!sure) return;
-
         const exerciseId = window.currentExerciseId;
         if (!exerciseId) {
           alert("Kein Event selektiert?");
           return;
         }
         try {
-          const url = `${BACKEND_URL}/api/exercises/${userId}/${exerciseId}`;
-          const response = await fetch(url, { method: 'DELETE' });
-          if (!response.ok) throw new Error(`Server error: ${response.status}`);
+          const deleteUrl = `${BACKEND_URL}/api/exercises/${userId}/${exerciseId}`;
+          const response = await fetch(deleteUrl, { method: 'DELETE' });
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
           const data = await response.json();
           if (data.success) {
             calendar.refetchEvents();
@@ -130,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } catch (err) {
           console.error('Löschfehler:', err);
-          alert("Konnte nicht löschen!");
+          alert('Konnte nicht löschen!');
         }
       });
     }
@@ -154,7 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const city = weatherCityInput.value.trim() || 'Berlin';
       try {
         const response = await fetch(`${BACKEND_URL}/api/weather?city=${city}`);
-        if (!response.ok) throw new Error(`Fehler vom Backend: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`Fehler vom Backend: ${response.status}`);
+        }
         const data = await response.json();
         if (data.error) {
           weatherError.textContent = 'Fehler: ' + data.error;
@@ -195,8 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const url = `${BACKEND_URL}/api/exercises/${userId}/stats?start=${startDate}&end=${endDate}`;
-        const response = await fetch(url);
+        const statsUrl = `${BACKEND_URL}/api/exercises/${userId}/stats?start=${startDate}&end=${endDate}`;
+        const response = await fetch(statsUrl);
         if (!response.ok) {
           throw new Error(`Server-Fehler: ${response.status}`);
         }
@@ -221,9 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
           values.push(data[bp]);
         }
 
+        // ggf. alten Chart zerstören
         if (statsChart) statsChart.destroy();
 
-        // -> Doughtnut statt Pie
+        // Chart.js 2.x syntax
         statsChart = new Chart(statsChartCanvas, {
           type: 'doughnut',
           data: {
@@ -231,12 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
             datasets: [{
               data: values,
               backgroundColor: [
-                '#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6',
+                '#f87171', '#fbbf24', '#34d399', '#60a5fa',
+                '#a78bfa', '#f472b6',
               ]
             }]
           },
           options: {
-            responsive: false,
+            responsive: false, // wir wollen feste Größe
             legend: {
               position: 'bottom'
             }
