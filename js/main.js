@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'de',
-        firstDay: 1,           // Montag als Wochenstart
-        dayMaxEventRows: 3,    // begrenzt Höhe pro Tag
+        firstDay: 1,           // Montag
+        dayMaxEventRows: 3,    // max 3 events pro Tag
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
         eventClick: (info) => {
           // Klick -> Modal
           window.currentExerciseId = info.event.id;
-
           document.getElementById('modal-title').textContent = info.event.title || '-';
           document.getElementById('modal-date').textContent = info.event.startStr || '-';
           document.getElementById('modal-weight').textContent = info.event.extendedProps.weight ?? '-';
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       calendar.render();
 
-      // Formular -> Neue Übung
+      // Formular: Neue Übung
       if (exerciseForm) {
         exerciseForm.addEventListener('submit', async (e) => {
           e.preventDefault();
@@ -78,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const sets = parseInt(document.getElementById('ex-sets').value, 10);
           const bodyPart = document.getElementById('ex-bodypart').value;
 
-          const newEvent = { 
+          const newEvent = {
             title,
             start: date,
             weight,
@@ -117,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnDeleteExercise.addEventListener('click', async () => {
         const sure = confirm("Wirklich löschen?");
         if (!sure) return;
+
         const exerciseId = window.currentExerciseId;
         if (!exerciseId) {
           alert("Kein Event selektiert?");
@@ -161,9 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const city = weatherCityInput.value.trim() || 'Berlin';
       try {
         const response = await fetch(`${BACKEND_URL}/api/weather?city=${city}`);
-        if (!response.ok) {
-          throw new Error(`Fehler vom Backend: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Fehler vom Backend: ${response.status}`);
+
         const data = await response.json();
         if (data.error) {
           weatherError.textContent = 'Fehler: ' + data.error;
@@ -206,9 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const statsUrl = `${BACKEND_URL}/api/exercises/${userId}/stats?start=${startDate}&end=${endDate}`;
         const response = await fetch(statsUrl);
-        if (!response.ok) {
-          throw new Error(`Server-Fehler: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Server-Fehler: ${response.status}`);
+
         const data = await response.json();
         const keys = Object.keys(data);
 
@@ -230,10 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
           values.push(data[bp]);
         }
 
-        // ggf. alten Chart zerstören
         if (statsChart) statsChart.destroy();
 
-        // Chart.js 2.x syntax
+        // Chart.js 2.x => Doughnut
         statsChart = new Chart(statsChartCanvas, {
           type: 'doughnut',
           data: {
@@ -242,12 +239,12 @@ document.addEventListener('DOMContentLoaded', () => {
               data: values,
               backgroundColor: [
                 '#f87171', '#fbbf24', '#34d399', '#60a5fa',
-                '#a78bfa', '#f472b6',
+                '#a78bfa', '#f472b6'
               ]
             }]
           },
           options: {
-            responsive: false, // wir wollen feste Größe
+            responsive: false, // fixierte Größe
             legend: {
               position: 'bottom'
             }
