@@ -63,8 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('modal-sets').textContent = sets != null ? sets : '-';
           document.getElementById('modal-reps').textContent = reps != null ? reps : '-';
 
-          // 3) Speichere exerciseId in einer globalen / closure-Variablen
-          //    oder setze es in dataset
+          // 3) Speichere exerciseId
           window.currentExerciseId = exId;
 
           // 4) Modal anzeigen
@@ -89,7 +88,17 @@ document.addEventListener('DOMContentLoaded', () => {
           const repetitions = parseInt(document.getElementById('ex-repetitions').value, 10);
           const sets = parseInt(document.getElementById('ex-sets').value, 10);
 
-          const newEvent = { title, start: date, weight, repetitions, sets };
+          // NEU: bodyPart
+          const bodyPart = document.getElementById('ex-bodypart').value;
+
+          const newEvent = { 
+            title,
+            start: date,
+            weight,
+            repetitions,
+            sets,
+            bodyPart // NEU
+          };
           try {
             const response = await fetch(`${BACKEND_URL}/api/exercises/${userId}`, {
               method: 'POST',
@@ -108,21 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // =======================
-      // MODAL-Logik
-      // =======================
+      // MODAL-Logik (Löschen)
       const deleteModal = document.getElementById('delete-modal');
       const btnCloseModal = document.getElementById('btn-close-modal');
       const btnDeleteExercise = document.getElementById('btn-delete-exercise');
 
-      // Close-Button: einfach Modal verstecken
       btnCloseModal.addEventListener('click', () => {
         deleteModal.classList.add('hidden');
       });
 
-      // Löschen-Button
       btnDeleteExercise.addEventListener('click', async () => {
-        // Nochmal fragen?
         const sure = confirm("Wirklich löschen?");
         if (!sure) return;
 
@@ -142,27 +146,65 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           const data = await response.json();
           if (data.success) {
-            // Erfolg => Kalender aktualisieren
             calendar.refetchEvents();
-            // Modal schließen
             deleteModal.classList.add('hidden');
           } else {
             alert('Fehler beim Löschen: ' + data.message);
           }
         } catch (err) {
           console.error('Löschfehler:', err);
-          alert('Konnte nicht löschen!');
+          alert("Konnte nicht löschen!");
         }
       });
+
+      // =======================
+      // STATISTIK
+      // =======================
+      const statsBtn = document.getElementById('stats-btn');
+      const statsResult = document.getElementById('stats-result');
+      if (statsBtn && statsResult) {
+        statsBtn.addEventListener('click', async () => {
+          if (!userId) {
+            statsResult.textContent = "Bitte einloggen!";
+            statsResult.style.color = 'red';
+            return;
+          }
+          const startDate = document.getElementById('stats-start').value;
+          const endDate = document.getElementById('stats-end').value;
+          if (!startDate || !endDate) {
+            statsResult.textContent = "Bitte Start- und Enddatum auswählen!";
+            statsResult.style.color = 'red';
+            return;
+          }
+
+          try {
+            // GET /api/exercises/{userId}/stats?start=...&end=...
+            const url = `${BACKEND_URL}/api/exercises/${userId}/stats?start=${startDate}&end=${endDate}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(`Server-Fehler: ${response.status}`);
+            }
+            const data = await response.json();
+            // data: { "Arme": 3, "Beine": 1, ... }
+
+            statsResult.style.color = 'black';
+            statsResult.innerHTML = `<h3 class="font-semibold mb-2">Ergebnisse:</h3>`;
+            for (const bodyPart in data) {
+              statsResult.innerHTML += `<p>${bodyPart}: ${data[bodyPart]}x</p>`;
+            }
+          } catch (err) {
+            statsResult.textContent = `Fehler beim Laden der Statistik: ${err.message}`;
+            statsResult.style.color = 'red';
+          }
+        });
+      }
     }
-  } 
-  // Falls nur ein Formular ohne Calendar...
-  else if (exerciseForm) {
-    // ...
+  } else if (exerciseForm) {
+    // Falls nur Formular ohne Kalender
   }
 
   // =======================
-  // B) WETTER-WIDGET (wie gehabt)
+  // B) WETTER-WIDGET
   // =======================
   const loadWeatherBtn = document.getElementById('load-weather-btn');
   const weatherCityInput = document.getElementById('weather-city');
