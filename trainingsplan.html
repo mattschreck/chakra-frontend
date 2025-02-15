@@ -5,26 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Trainingsplan | Chakra Wellness</title>
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS (synchron oder defer ist egal, hier meist synchron) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- FullCalendar -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.css"
+  <!-- FullCalendar CSS/JS -->
+  <link 
+    href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.css" 
     rel="stylesheet"
   />
-  <script
+  <script 
     src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"
   ></script>
 
-  <!-- Chart.js: WICHTIG: Vor main.js laden, damit 'Chart' definiert ist -->
+  <!-- Chart.js: NICHT "defer"! (damit "Chart" global verfügbar ist) -->
   <script 
-    src="https://cdn.jsdelivr.net/npm/chart.js"
-    integrity="sha384-lLtTDJ2AYEHSnr5n4IF63czZhDDuAI/2Y3ebZ6nOeXgo09NwRs3FeMOpb4Tu0ZLi"
-    crossorigin="anonymous"
+  src="https://cdn.jsdelivr.net/npm/chart.js"
+  integrity="sha384-lLtTDJ2AYEHSnr5n4IF63czZhDDuAI/2Y3ebZ6nOeXgo09NwRs3FeMOpb4Tu0ZLi"
+  crossorigin="anonymous"
   ></script>
 
-  <!-- nav.js + main.js (defer) -->
+  <!-- nav.js + main.js => defer, damit sie erst nach dem DOM geladen werden -->
   <script defer src="js/nav.js"></script>
   <script defer src="js/main.js"></script>
 
@@ -35,7 +35,6 @@
   <!-- Navbar -->
   <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10"></nav>
 
-  <!-- Hauptinhalt Trainingsplan -->
   <main class="pt-24 pb-16 max-w-screen-2xl mx-auto px-4">
     <h1 class="text-4xl font-bold mb-6">Trainingsplan</h1>
     <p class="text-gray-600 mb-4">
@@ -147,7 +146,7 @@
           </div>
           <button 
             id="load-weather-btn"
-            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full"
           >
             Wetter laden
           </button>
@@ -180,7 +179,7 @@
         <div id="stats-container" class="bg-white p-4 rounded shadow">
           <h2 class="text-2xl font-bold mb-4">Statistik</h2>
 
-          <!-- Zeiträume jetzt untereinander -->
+          <!-- Zeit-Felder untereinander -->
           <div class="mb-4">
             <label for="stats-start" class="block font-semibold">Von:</label>
             <input 
@@ -206,7 +205,6 @@
           </button>
 
           <div id="stats-result" class="mt-4 text-gray-700"></div>
-          <!-- Canvas für Kreisdiagramm -->
           <canvas id="stats-chart" class="mt-4" width="400" height="400"></canvas>
         </div>
       </div>
