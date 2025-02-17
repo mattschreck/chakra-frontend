@@ -1,4 +1,3 @@
-// js/nav.js
 document.addEventListener('DOMContentLoaded', () => {
   // Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
@@ -17,11 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
           <img src="images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
         </a>
 
-        <!-- Mitte: Trainingsplan -->
+        <!-- Mitte: Trainingsplan und externer MPA-Link -->
         <ul class="hidden lg:flex space-x-6">
           <li>
             <a href="trainingsplan.html" class="text-gray-600 hover:text-green-500">
               Trainingsplan
+            </a>
+          </li>
+          <li>
+            <a href="https://chakra-frontend-22562b10ca9e.herokuapp.com/index.html" class="text-gray-600 hover:text-green-500" target="_blank">
+              MPA
             </a>
           </li>
         </ul>
@@ -88,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Registrierung ---
+  // --- Registrierung (Formular) ---
   const regForm = document.getElementById('register-form');
   if (regForm) {
     regForm.addEventListener('submit', async (e) => {
@@ -109,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
           resultEl.textContent = "Registrierung erfolgreich!";
           resultEl.style.color = "green";
           setTimeout(() => {
+            // Direkt auf die SPA Home navigieren
             window.location.href = "index.html";
           }, 1000);
         } else {
@@ -122,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Login ---
+  // --- Login (Formular) ---
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
@@ -143,15 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
           resultEl.style.color = "green";
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userId', data.userId);
-
           if (data.name) {
             localStorage.setItem('userName', data.name);
           }
           if (data.email) {
             localStorage.setItem('userEmail', data.email);
           }
-
-          // Weiter zur Startseite
+          // Weiter zur Startseite der SPA
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);
