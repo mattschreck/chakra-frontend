@@ -1,3 +1,4 @@
+// js/nav.js
 document.addEventListener('DOMContentLoaded', () => {
   // Backend-URL flexibel setzen
   const BACKEND_URL = window.location.hostname === 'localhost'
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between py-4">
         <!-- Logo -->
         <a href="index.html">
-          <img src="assets/images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
+          <img src="images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
         </a>
 
         <!-- Mitte: Trainingsplan -->
@@ -21,6 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
           <li>
             <a href="trainingsplan.html" class="text-gray-600 hover:text-green-500">
               Trainingsplan
+            </a>
+          </li>
+          <li>
+            <a href="https://chakra-spa-43de000ff9cc.herokuapp.com/home"
+               class="text-gray-600 hover:text-green-500"
+               target="_blank"
+            >
+              SPA
             </a>
           </li>
         </ul>
@@ -48,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navHtml += `
         <li>
           <a href="account.html" class="text-gray-600 hover:text-green-500">
-            <img src="assets/images/person.svg" alt="Account" class="h-6 w-6" />
+            <img src="images/person.svg" alt="Account" class="h-6 w-6" />
           </a>
         </li>
         <li>
@@ -142,12 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
           resultEl.style.color = "green";
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userId', data.userId);
+
           if (data.name) {
             localStorage.setItem('userName', data.name);
           }
           if (data.email) {
             localStorage.setItem('userEmail', data.email);
           }
+
+          // Weiter zur Startseite
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);
