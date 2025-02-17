@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </a>
 
         <!-- Mitte: Trainingsplan -->
-        <ul class="hidden lg:flex space-x-6">
+        <ul class="flex space-x-6">
           <li>
             <a href="trainingsplan.html" class="text-gray-600 hover:text-green-500">
               Trainingsplan
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </ul>
 
         <!-- Rechts: Login/Register oder Account/Logout -->
-        <ul class="hidden lg:flex space-x-6 items-center">
+        <ul class="flex space-x-6 items-center">
     `;
 
     if (!token) {
