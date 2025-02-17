@@ -13,19 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="max-w-screen-2xl mx-auto px-4 flex items-center justify-between py-4">
         <!-- Logo -->
         <a href="index.html">
-          <img src="images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
+          <img src="assets/images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
         </a>
 
-        <!-- Mitte: Trainingsplan und externer MPA-Link -->
+        <!-- Mitte: Trainingsplan -->
         <ul class="hidden lg:flex space-x-6">
           <li>
             <a href="trainingsplan.html" class="text-gray-600 hover:text-green-500">
               Trainingsplan
-            </a>
-          </li>
-          <li>
-            <a href="https://chakra-frontend-22562b10ca9e.herokuapp.com/index.html" class="text-gray-600 hover:text-green-500" target="_blank">
-              MPA
             </a>
           </li>
         </ul>
@@ -53,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navHtml += `
         <li>
           <a href="account.html" class="text-gray-600 hover:text-green-500">
-            <img src="images/person.svg" alt="Account" class="h-6 w-6" />
+            <img src="assets/images/person.svg" alt="Account" class="h-6 w-6" />
           </a>
         </li>
         <li>
@@ -92,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Registrierung (Formular) ---
+  // --- Registrierung ---
   const regForm = document.getElementById('register-form');
   if (regForm) {
     regForm.addEventListener('submit', async (e) => {
@@ -113,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
           resultEl.textContent = "Registrierung erfolgreich!";
           resultEl.style.color = "green";
           setTimeout(() => {
-            // Direkt auf die SPA Home navigieren
             window.location.href = "index.html";
           }, 1000);
         } else {
@@ -127,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Login (Formular) ---
+  // --- Login ---
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
@@ -154,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if (data.email) {
             localStorage.setItem('userEmail', data.email);
           }
-          // Weiter zur Startseite der SPA
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);
