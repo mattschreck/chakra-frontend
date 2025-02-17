@@ -17,25 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
           <img src="images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
         </a>
 
-        <!-- Mitte: Trainingsplan -->
-        <ul class="flex space-x-6">
+        <!-- Mitte: Trainingsplan und SPA -->
+        <ul class="hidden lg:flex space-x-6">
           <li>
             <a href="trainingsplan.html" class="text-gray-600 hover:text-green-500">
               Trainingsplan
             </a>
           </li>
           <li>
-            <a href="https://chakra-spa-43de000ff9cc.herokuapp.com/home"
-               class="text-gray-600 hover:text-green-500"
-               target="_blank"
-            >
+            <a href="https://chakra-spa-43de000ff9cc.herokuapp.com/home" class="text-gray-600 hover:text-green-500">
               SPA
             </a>
           </li>
         </ul>
 
         <!-- Rechts: Login/Register oder Account/Logout -->
-        <ul class="flex space-x-6 items-center">
+        <ul class="hidden lg:flex space-x-6 items-center">
     `;
 
     if (!token) {
