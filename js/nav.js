@@ -17,16 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
           <img src="images/chakra-logo.png" alt="Chakra Logo" class="h-8 w-auto" />
         </a>
 
-        <!-- Mitte: Trainingsplan -->
+        <!-- Desktop-Navigation (sichtbar ab lg) -->
         <ul class="hidden lg:flex space-x-6">
           <li>
             <a href="trainingsplan.html" class="text-gray-600 hover:text-green-500">
               Trainingsplan
             </a>
           </li>
+          <li>
+            <a href="https://chakra-spa-43de000ff9cc.herokuapp.com/home" class="text-gray-600 hover:text-green-500">
+              SPA
+            </a>
+          </li>
         </ul>
 
-        <!-- Rechts: Login/Register oder Account/Logout -->
+        <!-- Rechts: Login/Register oder Account/Logout (Desktop) -->
         <ul class="hidden lg:flex space-x-6 items-center">
     `;
 
@@ -62,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navHtml += `
         </ul>
+
         <!-- Hamburger-Menü (mobil) -->
         <button id="menu-toggle" class="lg:hidden text-gray-600 hover:text-green-500">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
@@ -71,11 +77,50 @@ document.addEventListener('DOMContentLoaded', () => {
           </svg>
         </button>
       </div>
+
+      <!-- Mobile-Navigation (anfangs versteckt) -->
+      <div id="mobile-menu" class="lg:hidden hidden px-4 pb-4">
+        <ul class="space-y-2">
+          <li>
+            <a href="trainingsplan.html" class="block text-gray-600 hover:text-green-500">
+              Trainingsplan
+            </a>
+          </li>
+          <li>
+            <a href="https://chakra-spa-43de000ff9cc.herokuapp.com/home" class="block text-gray-600 hover:text-green-500">
+              SPA
+            </a>
+          </li>
+          ${!token ? `
+            <li>
+              <a href="login.html" class="block text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:text-green-500">
+                Login
+              </a>
+            </li>
+            <li>
+              <a href="register.html" class="block bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+                Register
+              </a>
+            </li>
+          ` : `
+            <li>
+              <a href="account.html" class="block text-gray-600 hover:text-green-500">
+                Account
+              </a>
+            </li>
+            <li>
+              <button id="mobile-logout" class="w-full text-left text-red-500 border border-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white">
+                Logout
+              </button>
+            </li>
+          `}
+        </ul>
+      </div>
     `;
 
     navbar.innerHTML = navHtml;
 
-    // Logout
+    // Logout für Desktop
     const logoutBtn = document.getElementById('nav-logout');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', () => {
@@ -84,6 +129,27 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('userName');
         localStorage.removeItem('userEmail');
         window.location.href = "index.html";
+      });
+    }
+
+    // Logout für Mobile
+    const mobileLogoutBtn = document.getElementById('mobile-logout');
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userEmail');
+        window.location.href = "index.html";
+      });
+    }
+
+    // Hamburger-Menü Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
       });
     }
   }
