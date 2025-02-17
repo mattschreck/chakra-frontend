@@ -31,12 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </li>
         </ul>
 
-        <!-- Rechts: Login/Register oder Account/Logout (Desktop) -->
+        <!-- Desktop-Rechte Navigation -->
         <ul class="hidden lg:flex space-x-6 items-center">
     `;
 
     if (!token) {
-      // Nicht eingeloggt: Login + Register
+      // Nicht eingeloggt: Login & Register
       navHtml += `
         <li>
           <a href="login.html" class="text-gray-600 border border-gray-300 px-4 py-2 rounded-md hover:text-green-500">
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </li>
       `;
     } else {
-      // Eingeloggt: Account-Symbol + Logout
+      // Eingeloggt: Account & Logout
       navHtml += `
         <li>
           <a href="account.html" class="text-gray-600 hover:text-green-500">
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navHtml += `
         </ul>
 
-        <!-- Hamburger-Menü (mobil) -->
+        <!-- Hamburger-Menü (sichtbar nur auf mobilen Geräten) -->
         <button id="menu-toggle" class="lg:hidden text-gray-600 hover:text-green-500">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -118,9 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
+    // Füge die Navbar dem DOM hinzu
     navbar.innerHTML = navHtml;
 
-    // Logout für Desktop
+    // Hamburger-Menü Toggle (mit Debug-Ausgaben)
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        console.log('Hamburger Button wurde geklickt.');
+        console.log('Vorher mobileMenu Klassen:', mobileMenu.className);
+        mobileMenu.classList.toggle('hidden');
+        console.log('Nachher mobileMenu Klassen:', mobileMenu.className);
+      });
+    }
+
+    // Logout (Desktop)
     const logoutBtn = document.getElementById('nav-logout');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', () => {
@@ -132,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Logout für Mobile
+    // Logout (Mobile)
     const mobileLogoutBtn = document.getElementById('mobile-logout');
     if (mobileLogoutBtn) {
       mobileLogoutBtn.addEventListener('click', () => {
@@ -141,15 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('userName');
         localStorage.removeItem('userEmail');
         window.location.href = "index.html";
-      });
-    }
-
-    // Hamburger-Menü Toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (menuToggle && mobileMenu) {
-      menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
       });
     }
   }
@@ -209,15 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
           resultEl.style.color = "green";
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userId', data.userId);
-
           if (data.name) {
             localStorage.setItem('userName', data.name);
           }
           if (data.email) {
             localStorage.setItem('userEmail', data.email);
           }
-
-          // Weiter zur Startseite
           setTimeout(() => {
             window.location.href = "index.html";
           }, 1000);
