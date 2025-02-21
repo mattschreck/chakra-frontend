@@ -5,20 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chakra Wellness</title>
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS einbinden -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Hier bindest du NUR nav.js (und auth.js, wenn du den Login-Status verwenden willst) -->
-  <script defer src="js/auth.js"></script> <!-- optional, nur falls Login/Logout -->
+  <script defer src="js/auth.js"></script> 
   <script defer src="js/nav.js"></script>
 
-  <!-- Deine eigenen Styles -->
+  <!-- Eigene Styles -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-50 text-gray-800">
-  <!-- Dynamische Navbar -->
+  <!-- Dynamische Navbar, wird per nav.js geladen -->
   <nav id="navbar" class="bg-white border-b border-gray-200 fixed w-full z-10">
-    <!-- Wird per nav.js gefüllt -->
+    <!-- Inhalt wird dynamisch eingefügt -->
   </nav>
 
   <!-- Hero Section -->
@@ -43,7 +42,7 @@
   <section class="max-w-screen-2xl mx-auto px-4 py-16">
     <h2 class="text-3xl font-bold text-center mb-8">Entdecken Sie unsere vielseitigen Angebote</h2>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- Angebot 1 -->
+      <!-- Angebot 1: Maßgeschneidertes Training -->
       <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition-shadow">
         <div class="flex justify-center mb-4">
           <img src="images/exercise.svg" alt="Training Logo" class="h-16 w-16">
@@ -53,7 +52,7 @@
           Nehmen Sie an einer Vielzahl von Fitnesskursen teil, um Ihre körperliche Gesundheit zu verbessern.
         </p>
       </div>
-      <!-- Angebot 2 -->
+      <!-- Angebot 2: Entspannen und Erholen -->
       <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition-shadow">
         <div class="flex justify-center mb-4">
           <img src="images/spa.svg" alt="Spa Logo" class="h-16 w-16">
@@ -63,7 +62,7 @@
           Erleben Sie Entspannung mit unseren verschiedenen Sauna-Optionen.
         </p>
       </div>
-      <!-- Angebot 3 -->
+      <!-- Angebot 3: Genesung durch Physiotherapie -->
       <div class="bg-white rounded-lg shadow p-6 text-center hover:shadow-lg transition-shadow">
         <div class="flex justify-center mb-4">
           <img src="images/physio.svg" alt="Physiotherapie Logo" class="h-16 w-16">

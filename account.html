@@ -4,27 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chakra Wellness - Mein Account</title>
+  <!-- Tailwind CSS einbinden -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- auth.js + nav.js -->
+  <!-- auth.js und nav.js einbinden -->
   <script defer src="js/auth.js"></script>
   <script defer src="js/nav.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
-  <!-- Navbar dynamisch -->
+  <!-- Navbar (wird dynamisch via nav.js eingefügt) -->
   <nav id="navbar" class="bg-white border-b border-gray-200"></nav>
 
+  <!-- Hauptbereich: Accountseite -->
   <main class="flex-grow flex items-center justify-center p-4">
     <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
       <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Mein Account</h2>
 
-      <!-- Anzeige der aktuellen Daten -->
-      <div id="account-info" class="text-gray-700 mb-6">
-        <!-- auth.js füllt hier Name/E-Mail etc. -->
-      </div>
+      <!-- Hier werden die aktuellen Account-Daten angezeigt (Befüllung erfolgt in auth.js) -->
+      <div id="account-info" class="text-gray-700 mb-6"></div>
 
       <div class="space-y-6">
-        <!-- E-Mail ändern -->
+        <!-- Bereich zum Ändern der E-Mail -->
         <div>
           <button 
             id="btn-show-email-edit" 
@@ -33,7 +32,7 @@
             E-Mail ändern
           </button>
 
-          <!-- E-Mail-Edit-Feld (anfangs hidden) -->
+          <!-- Formular zum Ändern der E-Mail (initial versteckt) -->
           <form id="email-edit-form" class="mt-2 hidden">
             <label for="new-email" class="block font-semibold mb-1">Neue E-Mail</label>
             <input 
@@ -52,7 +51,7 @@
           </form>
         </div>
 
-        <!-- Passwort ändern -->
+        <!-- Bereich zum Ändern des Passworts -->
         <div>
           <button 
             id="btn-show-pw-edit"
@@ -61,7 +60,7 @@
             Passwort ändern
           </button>
 
-          <!-- PW-Edit-Feld (anfangs hidden) -->
+          <!-- Formular zum Ändern des Passworts (initial versteckt) -->
           <form id="pw-edit-form" class="mt-2 hidden">
             <label for="new-password" class="block font-semibold mb-1">Neues Passwort</label>
             <input 
@@ -81,7 +80,7 @@
         </div>
       </div>
 
-      <!-- Logout -->
+      <!-- Logout-Button -->
       <button 
         id="logout-btn" 
         class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition mt-8"
